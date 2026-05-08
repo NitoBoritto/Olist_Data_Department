@@ -18,3 +18,4 @@ __pycache__/
 __init__.py
 notebooks/*.png
 .vscode/
+venv/
