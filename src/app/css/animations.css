@@ -43,3 +43,168 @@
 .hero-btns { animation-delay: 1.2s; }
 .hero-scroll { animation: fadeUp 1s 1.5s both; }
 .hero-scroll .scroll-line { animation: scrollPulse 1.5s infinite; }
+
+/* ============================================================
+ *  OLIST — "LIQUID AURA" CURSOR STYLES
+ *  Append these rules to your existing animations.css
+ *  (or import as a separate cursor.css)
+ * ============================================================ */
+
+/* ── Hide the native OS cursor everywhere ── */
+*,
+*::before,
+*::after {
+  cursor: none !important;
+}
+
+/* ─────────────────────────────────────────────
+ *  CORE DOT
+ *  8px hard dot — instant tracking, no lag
+ * ───────────────────────────────────────────── */
+#cursor-core {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-light, #00D9FF);
+  box-shadow:
+    0 0 6px 2px var(--primary-light, #00D9FF),
+    0 0 12px 4px var(--primary, #0066FF);
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+/* ─────────────────────────────────────────────
+ *  AURA RING
+ *  40px spring-lagging outer ring
+ * ───────────────────────────────────────────── */
+#cursor-aura {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary-light, #00D9FF);
+  background: transparent;
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  mix-blend-mode: exclusion;          /* glassmorphism "invert" magic */
+  transition:
+    border-color 0.25s ease,
+    box-shadow   0.25s ease;
+}
+
+/* Dark mode: aura gets slightly more opacity */
+[data-theme="dark"] #cursor-aura {
+  border-color: var(--cyan, #00D9FF);
+  opacity: 0.9;
+}
+
+/* ─────────────────────────────────────────────
+ *  SVG TRAIL CANVAS
+ * ───────────────────────────────────────────── */
+#cursor-trail-svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99997;
+  overflow: visible;
+  mix-blend-mode: screen;
+}
+
+/* ─────────────────────────────────────────────
+ *  CLICK RIPPLE RING
+ * ───────────────────────────────────────────── */
+.cursor-ripple-ring {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan, #00D9FF);
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  z-index: 99996;
+  animation: cursorRippleRing 0.55s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+}
+
+@keyframes cursorRippleRing {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(5.5); opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────
+ *  CLICK BURST PARTICLES
+ * ───────────────────────────────────────────── */
+.cursor-ripple-particle {
+  position: fixed;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 99996;
+  animation: cursorParticleBurst 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes cursorParticleBurst {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────
+ *  BENTO-CARD & BUTTON HOVER GLOW RESPONSE
+ *  The JS handles cursor scale; these CSS rules
+ *  add a matching glow on the element itself.
+ * ───────────────────────────────────────────── */
+.bento-card,
+button,
+.btn,
+a {
+  transition:
+    box-shadow  0.3s ease,
+    border-color 0.3s ease;
+}
+
+.bento-card:hover {
+  box-shadow:
+    0 0 0 1px var(--border, rgba(0,102,255,0.2)),
+    0 8px 32px -8px var(--primary, #0066FF)44,
+    0 0 40px -10px var(--cyan, #00D9FF)33;
+}
+
+button:hover,
+.btn:hover {
+  box-shadow:
+    0 0 16px 2px var(--primary-light, #00D9FF)55,
+    0 4px 20px -4px var(--primary, #0066FF)66;
+}
+
+/* ─────────────────────────────────────────────
+ *  REDUCED MOTION — disable cursor effects
+ *  for users who prefer reduced motion
+ * ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #cursor-core,
+  #cursor-aura,
+  #cursor-trail-svg,
+  .cursor-ripple-ring,
+  .cursor-ripple-particle {
+    display: none !important;
+  }
+
+  * {
+    cursor: auto !important;
+  }
+}

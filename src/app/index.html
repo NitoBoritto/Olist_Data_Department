@@ -12,6 +12,9 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/sections.css">
 <link rel="stylesheet" href="css/animations.css">
+<!-- 3m Farghaly Chat -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/farghaly.css">
 </head>
 <body>
 
@@ -1063,6 +1066,76 @@
   </div>
 </footer>
 
+<!-- ═══ 3m FARGHALY FLOATING CHAT ═══ -->
+
+<!-- Floating trigger button (visible when chat is closed) -->
+<button class="chat-fab" id="chatFab" onclick="toggleFarghaly()" title="Chat with 3m Farghaly">
+  🤖
+  <span class="fab-badge"></span>
+</button>
+
+<!-- Chat window (hidden by default) -->
+<div class="farghaly-window" id="farghalyWindow" style="display:none">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="avatar-wrap">
+      <div class="avatar">🤖</div>
+      <span class="status-dot"></span>
+    </div>
+    <div class="header-info">
+      <div class="bot-name">
+        3m Farghaly
+        <span class="bot-badge">AI</span>
+      </div>
+      <div class="bot-status">Online — Ready to crunch data</div>
+    </div>
+    <div class="header-actions">
+      <button class="hdr-btn" title="Clear chat" onclick="window._farghaly?.clear()">🗑️</button>
+      <button class="hdr-btn" title="Export chat" onclick="window._farghaly?.export()">💾</button>
+      <button class="hdr-btn" title="Close" onclick="toggleFarghaly()">✕</button>
+    </div>
+  </div>
+
+  <!-- Quick prompts -->
+  <div class="quick-prompts" data-farghaly="quick-prompts"></div>
+
+  <!-- Messages -->
+  <div class="messages-area" data-farghaly="messages">
+    <div class="welcome-card" data-farghaly="welcome">
+      <div class="welcome-icon">🤖</div>
+      <div class="welcome-title">Salut! I'm 3m Farghaly</div>
+      <div class="welcome-sub">
+        Your elite Olist data buddy. Ask me about company history, SQL queries,
+        delivery times, top sellers — anything. I don't bite… datasets do. 😈
+      </div>
+      <hr class="welcome-divider" />
+      <div style="font-size:11px;color:var(--text-dimmer);">
+        🔗 Olist Dataset &nbsp;·&nbsp; ⚡ FastAPI Backend
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-row">
+      <textarea
+        data-farghaly="input"
+        rows="1"
+        placeholder="Ask 3m Farghaly anything…"
+        maxlength="1000"
+      ></textarea>
+      <button class="send-btn" data-farghaly="send" title="Send (Enter)">➤</button>
+    </div>
+    <div class="input-footer">
+      <span class="input-hint">⏎ Send &nbsp;·&nbsp; ⇧⏎ New line</span>
+      <span class="char-count" data-farghaly="char-count">0 / 1000</span>
+    </div>
+  </div>
+
+</div>
+<!-- ═══ END FARGHALY ═══ -->
+
 <script src="js/cursor.js"></script>
 <script src="js/hero-canvas.js"></script>
 <script src="js/team.js"></script>
@@ -1131,6 +1204,23 @@ function switchDashboard(tab, btn) {
     }
   });
 })();
+</script>
+<script src="js/farghaly.js"></script>
+<script>
+  // Init 3m Farghaly and wire the toggle
+  window._farghaly = new FarghalyChat({
+    endpoint: 'http://localhost:8000/api/farghaly/chat'
+  });
+  window._farghaly.mount('#farghalyWindow');
+
+  function toggleFarghaly() {
+    const win = document.getElementById('farghalyWindow');
+    const fab = document.getElementById('chatFab');
+    const isOpen = win.style.display !== 'none';
+    win.style.display = isOpen ? 'none' : 'flex';
+    fab.style.display  = isOpen ? 'flex' : 'none';
+    if (!isOpen) win.querySelector('[data-farghaly="input"]').focus();
+  }
 </script>
 </body>
 </html>
