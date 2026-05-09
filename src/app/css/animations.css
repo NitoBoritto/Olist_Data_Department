@@ -1,0 +1,45 @@
+/* ===== KEYFRAME ANIMATIONS ===== */
+@keyframes blink { 
+  0%, 100% { opacity: 1; } 
+  50% { opacity: 0.3; } 
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse { 
+  0%, 100% { opacity: 0.4; transform: scaleY(1); } 
+  50% { opacity: 1; transform: scaleY(1.2); } 
+}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s, transform 0.8s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== HERO ANIMATIONS ===== */
+.hero-pretitle, 
+.hero-title .line1, 
+.hero-title .line2,
+.hero-title .line3, 
+.hero-sub, 
+.hero-btns {
+  opacity: 0;
+  animation: fadeUp 0.8s forwards;
+}
+.hero-pretitle { animation-delay: 0.3s; }
+.hero-title .line1 { animation-delay: 0.5s; }
+.hero-title .line2 { animation-delay: 0.65s; }
+.hero-title .line3 { animation-delay: 0.8s; }
+.hero-sub { animation-delay: 1s; }
+.hero-btns { animation-delay: 1.2s; }
+.hero-scroll { animation: fadeUp 1s 1.5s both; }
+.hero-scroll .scroll-line { animation: scrollPulse 1.5s infinite; }

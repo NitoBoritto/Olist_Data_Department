@@ -1,0 +1,53 @@
+:root {
+  --primary: #0066FF;
+  --primary-light: #00D9FF;
+  --primary-dark: #0052CC;
+  
+  --bg: #FAFBFC;
+  --bg2: #F0F4F8;
+  --bg3: #E1E8F0;
+  
+  --surface: #FFFFFF;
+  --surface2: #F8FAFC;
+  
+  --border: rgba(0, 102, 255, 0.2);
+  --border2: rgba(0, 102, 255, 0.1);
+  
+  --text: #001F3D;
+  --text-dim: #475569;
+  --text-dimmer: #6B7C93;
+  
+  --success: #00C853;
+  --pink: #FF6B9D;
+  --cyan: #00D9FF;
+  --nav-bg: rgba(250, 251, 252, 0.95);
+  --hero-title-grad: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  --hero-line3-color: var(--text-dimmer);
+}
+
+[data-theme="dark"] {
+  --primary: #0066FF;
+  --primary-light: #00D9FF;
+  --primary-dark: #0052CC;
+  
+  --bg: #001F3D;
+  --bg2: #002855;
+  --bg3: #003366;
+  
+  --surface: #004080;
+  --surface2: #004D99;
+  
+  --border: rgba(0, 102, 255, 0.2);
+  --border2: rgba(0, 102, 255, 0.1);
+  
+  --text: #FFFFFF;
+  --text-dim: #B8C5D6;
+  --text-dimmer: #6B7C93;
+  
+  --success: #00C853;
+  --pink: #FF6B9D;
+  --cyan: #00D9FF;
+  --nav-bg: rgba(0, 31, 61, 0.95);
+  --hero-title-grad: var(--primary-light);
+  --hero-line3-color: var(--text);
+}

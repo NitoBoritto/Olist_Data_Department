@@ -28,3 +28,9 @@ sqlalchemy
 pyodbc
 kagglehub
 missingno
+sqlalchemy
+python-dotenv
+pyodbc
+plotly
+requests
+spacy

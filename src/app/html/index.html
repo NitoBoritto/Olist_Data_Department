@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olist — Business Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Side indicator dots -->
+<div class="side-indicator" id="sideIndicator">
+  <div class="side-dot active" data-section="hero"></div>
+  <div class="side-dot" data-section="team"></div>
+  <div class="side-dot" data-section="performance"></div>
+  <div class="side-dot" data-section="analytics"></div>
+  <div class="side-dot" data-section="features"></div>
+  <div class="side-dot" data-section="dataset"></div>
+  <div class="side-dot" data-section="pipeline"></div>
+  <div class="side-dot" data-section="ai-engine"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <span class="brand">Olist</span>
+    <span class="sub"></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#team">Team</a></li>
+    <li><a href="#performance">Overview</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#ai-engine">AI Engine</a></li>
+    <li>
+      <label class="theme-switch" for="themeToggleCheckbox">
+        <input type="checkbox" id="themeToggleCheckbox">
+        <div class="theme-slider"></div>
+      </label>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-pretitle">Business Intelligence Platform </div>
+    <h1 class="hero-title">
+      <span class="line1">Olist</span>
+      <span class="line2"></span>
+      <span class="line3">Business Intelligence Project</span>
+    </h1>
+    <p class="hero-sub">Supervised by DR. Shady <br> T.A Noran</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('performance').scrollIntoView({behavior:'smooth'})">View Dashboard</button>
+      <button class="btn-outline" onclick="document.getElementById('ai-engine').scrollIntoView({behavior:'smooth'})">Start Predictions</button>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section id="team">
+  <div class="team-left">
+    <div class="section-tag">01 — The Team</div>
+    <h2 class="section-title">Meet the<br>Team</h2>
+    <p class="section-desc">Move your mouse over to interact.</p>
+
+    <div class="team-scene" id="teamScene">
+      <div class="team-crosshair tl"></div>
+      <div class="team-crosshair br"></div>
+
+      <div class="team-member active" data-index="0" id="member0">
+        <img src="img/yasser.png" style="height:295px;" alt="Yasser">
+        <div class="member-leader-dot"></div>
+        <div class="member-label">Yasser</div>
+      </div>
+      <div class="team-member" data-index="1" id="member1">
+        <img src="img/abdallah.png" style="height:280px;" alt="Abdallah">
+        <div class="member-label">Abdallah</div>
+      </div>
+      <div class="team-member" data-index="2" id="member2">
+        <img src="img/mohanad.png" style="height:280px;" alt="Mohanad">
+        <div class="member-label">Mohanad</div>
+      </div>
+      <div class="team-member" data-index="3" id="member3">
+        <img src="img/ahmed.png" style="height:280px;" alt="Ahmed">
+        <div class="member-label">Ahmed</div>
+      </div>
+      <div class="team-member" data-index="4" id="member4">
+        <img src="img/mariam.png" style="height:280px;" alt="Mariam">
+        <div class="member-label">Mariam</div>
+      </div>
+      <div class="team-member" data-index="5" id="member5">
+        <img src="img/marwa.png" style="height:280px;" alt="Marwa">
+        <div class="member-label">Marwa</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-right reveal">
+    <div class="roster-title">Team Roster</div>
+
+    <div class="roster-item active" data-member="0" id="roster0">
+      <span class="roster-role">Team Leader</span>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">01</div>
+        <div>
+          <span class="roster-name">Yasser Ahmed Mohamed</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA · Leadership · Data Analysis</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:95%"></div>
+    </div>
+
+    <div class="roster-item" data-member="1" id="roster1">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">02</div>
+        <div>
+          <span class="roster-name">Abdallah Ali Abdelgawad</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA · Data Analysis · Data Warehouse</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:60%"></div>
+    </div>
+
+    <div class="roster-item" data-member="2" id="roster2">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">03</div>
+        <div>
+          <span class="roster-name">Mohanad Ibrahim Elsayed</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA · Data Analysis . PowerBI</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:65%"></div>
+    </div>
+
+    <div class="roster-item" data-member="3" id="roster3">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">04</div>
+        <div>
+          <span class="roster-name">Ahmed Walid Ibrahim</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA · Data Analysis · Machine Learning</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:68%"></div>
+    </div>
+
+    <div class="roster-item" data-member="4" id="roster4">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">05</div>
+        <div>
+          <span class="roster-name">Mariam Tarek Salama</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA . a . b</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:72%"></div>
+    </div>
+
+  <div class="roster-item" data-member="5" id="roster5">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div class="roster-badge">06</div>
+        <div>
+          <span class="roster-name">Marwa Tarek Gaber</span>
+        </div>
+      </div>
+      <span class="roster-sub">BA . a . b</span>
+      <div class="roster-tags">
+        <span class="tag">a</span>
+        <span class="tag">b</span>
+        <span class="tag">c</span>
+      </div>
+      <div class="roster-progress" style="width:72%"></div>
+    </div>
+
+    <div class="team-footer">Made in One Semester ◆</div>
+  </div>
+</section>
+
+<!-- PERFORMANCE SECTION -->
+<section id="performance">
+  <div class="section-tag">01 — Key Metrics</div>
+  <h2 class="section-title reveal">Performance<br>Overview</h2>
+  <p class="section-desc reveal">Once you connect your dataset, these KPIs will populate in real time.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card reveal" style="transition-delay:0.1s">
+      <span class="kpi-icon">👤</span>
+      <span class="kpi-label">Total Customers</span>
+      <span class="kpi-value" data-count="10000">0</span>
+      <div class="kpi-desc">Row count</div>
+    </div>
+    <div class="kpi-card reveal" style="transition-delay:0.2s">
+      <span class="kpi-icon">📊</span>
+      <span class="kpi-label">Subscription Rate</span>
+      <span class="kpi-value" data-count="50" data-suffix="%">0%</span>
+      <div class="kpi-desc">Computed from yes/no split</div>
+    </div>
+    <div class="kpi-card reveal" style="transition-delay:0.3s">
+      <span class="kpi-icon">📱</span>
+      <span class="kpi-label">Avg. Call Duration</span>
+      <span class="kpi-value" data-count="100" data-suffix=" s">0 s</span>
+      <div class="kpi-desc">Average duration from the database</div>
+      
+    </div>
+    <div class="kpi-card reveal" style="transition-delay:0.4s">
+      <span class="kpi-icon">🌐</span>
+      <span class="kpi-label">Most Frequent Macro Economic Environment</span>
+      <span class="kpi-value" style="font-size:24px">Stable</span>
+      <div class="kpi-desc">Mode of macro_environment_label</div>
+    </div>
+    <div class="kpi-card reveal" style="transition-delay:0.5s">
+      <span class="kpi-icon">😍</span>
+      <span class="kpi-label">Avg. Engagement Score</span>
+      <span class="kpi-value" data-count="1.5" data-decimals="1">0.0</span>
+      <div class="kpi-desc">Average engagement_score from the database</div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS SECTION -->
+<section id="analytics">
+  <div class="section-tag">02 — Analytics</div>
+  <h2 class="section-title reveal">Dashboard<br>Insights</h2>
+  <p class="section-desc reveal">Charts and visualizations will render here once your dataset is connected and processed.</p>
+
+  <!-- Dashboard Tab Buttons -->
+  <div class="dashboard-tabs reveal">
+    <button class="dashboard-tab active" onclick="switchDashboard('overview', this)">Overview</button>
+    <button class="dashboard-tab" onclick="switchDashboard('sales', this)">Sales Deep Dive</button>
+    <button class="dashboard-tab" onclick="switchDashboard('marketing', this)">Marketing</button>
+    <button class="dashboard-tab" onclick="switchDashboard('customers', this)">Customer Insights</button>
+  </div>
+
+  <!-- Overview Panel -->
+  <div class="dashboard-panel active" id="dash-overview" style="text-align:center; padding:100px 20px;">
+    <h2 style="font-size:42px; margin:20px 0 10px;">Section 1 — Overview</h2>
+  </div>
+
+  <!-- Sales Deep Dive Panel -->
+  <div class="dashboard-panel" id="dash-sales" style="text-align:center; padding:100px 20px;">
+    <h2 style="font-size:42px; margin:20px 0 10px;">Section 2 — Sales Deep Dive</h2>
+  </div>
+
+  <!-- Marketing Panel -->
+  <div class="dashboard-panel" id="dash-marketing" style="text-align:center; padding:100px 20px;">
+    <h2 style="font-size:42px; margin:20px 0 10px;">Section 3 — Marketing</h2>
+  </div>
+
+  <!-- Customer Insights Panel -->
+  <div class="dashboard-panel" id="dash-customers" style="text-align:center; padding:100px 20px;">
+    <h2 style="font-size:42px; margin:20px 0 10px;">Section 4 — Customer Insights</h2>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features">
+  <div class="section-tag">03 — Capabilities</div>
+  <h2 class="section-title reveal">What This<br>Platform Does</h2>
+  <p class="section-desc reveal">A complete suite of analytical tools built for data science workflows.</p>
+
+  <div class="features-grid">
+    <div class="feature-card reveal" style="transition-delay:0.1s">
+      <span class="feature-num">01</span>
+      <span class="feature-icon">👤</span>
+      <div class="feature-name">example</div>
+      <div class="feature-desc">example description</div>
+      <div class="feature-tags">
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+      </div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:0.2s">
+      <span class="feature-num">02</span>
+      <span class="feature-icon">📈</span>
+      <div class="feature-name">example</div>
+      <div class="feature-desc">example description</div>
+      <div class="feature-tags">
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+      </div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:0.3s">
+      <span class="feature-num">03</span>
+      <span class="feature-icon">🧠</span>
+      <div class="feature-name">example</div>
+      <div class="feature-desc">example description</div>
+      <div class="feature-tags">
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+      </div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:0.4s">
+      <span class="feature-num">04</span>
+      <span class="feature-icon">⚡</span>
+      <div class="feature-name">example</div>
+      <div class="feature-desc">example description</div>
+      <div class="feature-tags">
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+      </div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:0.5s">
+      <span class="feature-num">05</span>
+      <span class="feature-icon">📋</span>
+      <div class="feature-name">example</div>
+      <div class="feature-desc">example description</div>
+      <div class="feature-tags">
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">blabla</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATASET SECTION -->
+<section id="dataset">
+  <div class="section-tag">04 — Data Preview</div>
+  <h2 class="section-title reveal">Dataset<br>Explorer</h2>
+  <p class="section-desc reveal">A preview of your dataset structure. This table will populate once your data is connected.</p>
+
+  <div class="table-container reveal">
+    <div class="table-header">
+      <div>
+        <span class="table-name">Records</span>
+        <span class="table-badge">Live DB</span>
+      </div>
+      <div class="table-actions">
+        <input type="text" class="filter-input" placeholder="Filter rows..." id="tableFilter" oninput="filterTable()">
+        <button class="toggle-btn active" onclick="toggleView(this)">Table View</button>
+        <button class="toggle-btn" onclick="toggleView(this)">Code</button>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>#</th><th>Education</th><th>Default</th><th>Housing</th><th>Loan</th><th>Contact</th><th>Month</th><th>Day of Week</th><th>Duration</th><th>Campaign</th><th>Pdays</th><th>Previous</th><th>Poutcome</th><th>Emp. Var. Rate</th><th>Cons. Price Idx</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+      </tbody>
+    </table>
+    </div>
+
+    <div class="table-sql">
+      <span><span class="sql-text">Powerbi</span> : example for data selection</span>
+      <div class="table-pagination">
+        <span style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-dimmer)">Row 1 of 10</span>
+        <button class="page-btn">◀ Prev</button>
+        <button class="page-btn">Next ▶</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE SECTION -->
+<section id="pipeline">
+  <div class="section-tag">05 — Workflow</div>
+  <h2 class="section-title reveal">Data Science<br>Pipeline</h2>
+  <p class="section-desc reveal">Your current project status in the analytics pipeline. All stages are complete and deployment is live.</p>
+
+  <div class="pipeline-steps reveal">
+    <div class="pipeline-step">
+      <div class="step-circle">🗃️</div>
+      <div class="step-name">Data Collection</div>
+      <div class="step-desc">Source Kaggle dataset</div>
+      <span class="step-badge complete">Complete</span>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-circle">🔬</div>
+      <div class="step-name">EDA & Cleaning</div>
+      <div class="step-desc">Exploratory analysis complete</div>
+      <span class="step-badge complete">Complete</span>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-circle">⚙️</div>
+      <div class="step-name">Feature Engineering</div>
+      <div class="step-desc">Transform and encode variables</div>
+      <span class="step-badge complete">Complete</span>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-circle">🤖</div>
+      <div class="step-name">Model Training</div>
+      <div class="step-desc">LightGBM and other models</div>
+      <span class="step-badge complete">Complete</span>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-circle">📐</div>
+      <div class="step-name">Evaluation</div>
+      <div class="step-desc">ROC, F-measure model</div>
+      <span class="step-badge complete">Complete</span>
+    </div>
+    <div class="pipeline-step">
+      <div class="step-circle live-step">🚀</div>
+      <div class="step-name">Deployment</div>
+      <div class="step-desc">Connect to live databases</div>
+      <span class="step-badge live">Live</span>
+    </div>
+  </div>
+</section>
+
+<!-- AI ENGINE SECTION -->
+<section id="ai-engine">
+  <div class="section-tag">AI Engine</div>
+  <h2 class="section-title reveal">Predictive<br>Intelligence</h2>
+  <p class="section-desc reveal">ML-powered churn forecasting, risk scoring, and long-term trend analysis. Real-time inference — connect your dataset to activate live predictions.</p>
+  <div class="ai-engine-badge">AI Engine Active · Live API Mode</div>
+
+  <button class="run-prediction-btn" id="runPredBtn" onclick="showPredictionEngine()">
+    ⚡ Run Prediction
+  </button>
+  <p style="text-align:center;font-family:'Inter',sans-serif;font-size:13px;color:var(--text-dimmer);letter-spacing:0;margin-top:-30px;margin-bottom:40px;">Configure parameters for precise end-to-end prediction</p>
+
+  <div class="prediction-engine" id="predEngine" style="display:none">
+    <div class="engine-header">
+      <div class="engine-title">
+        ⚡ Prediction Engine
+        <span style="background:var(--success);color:#fff;font-size:10px;padding:4px 10px;letter-spacing:0;border-radius:4px;">● Live</span>
+      </div>
+      <div class="engine-meta">
+        <span>Model: <span class="gold">LightGBM</span></span>
+        <span>ROC: <span class="gold">0.809</span></span>
+        <button class="collapse-btn" onclick="hidePredictionEngine()">✕ Collapse</button>
+      </div>
+    </div>
+
+    <div class="step-tabs">
+      <div class="step-tab active" data-step="1" id="tab1">
+        <div class="step-num">1</div> Configure
+      </div>
+      <div class="step-tab" data-step="2" id="tab2">
+        <div class="step-num">2</div> Campaign
+      </div>
+      <div class="step-tab" data-step="3" id="tab3">
+        <div class="step-num">3</div> Economic
+      </div>
+      <div class="step-tab" data-step="4" id="tab4">
+        <div class="step-num">4</div> Execute
+      </div>
+    </div>
+    <div class="step-progress-bar" id="stepProgress" style="width:25%"></div>
+
+    <!-- Step 1: Client Profile -->
+    <div class="form-panel active" id="step1">
+      <div class="form-step-label">Step 1 of 4 — Client Profile Data</div>
+      <div class="form-step-title">Who is this client?</div>
+      <div class="form-fields">
+        <div class="form-group">
+          <label class="form-label">Age</label>
+          <div class="age-slider-row">
+            <input type="range" min="18" max="95" value="38" id="ageSlider" oninput="document.getElementById('ageVal').textContent=this.value">
+            <span id="ageVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:32px">38</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="jobType">
+            <option>a</option><option>b</option><option>c</option>
+            <option>d</option><option>e</option><option>f</option>
+            <option>g</option><option>h</option><option>i</option>
+            <option>j</option><option>k</option><option>l</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="marital">
+            <option>a</option><option>b</option><option>c</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="education">
+            <option>a</option><option>b</option>
+            <option>c</option><option>d</option><option>e</option>
+            <option>f</option><option>g</option><option>h</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="creditDefault">
+            <option>a</option><option>b</option><option>c</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="housingLoan">
+            <option>a</option><option>b</option><option>c</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="personalLoan">
+            <option>a</option><option>b</option><option>c</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-footer">
+        <div class="form-step-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <button class="next-btn" onclick="nextStep(2)">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Campaign Data -->
+    <div class="form-panel" id="step2">
+      <div class="form-step-label">Step 2 of 4 — Campaign Data</div>
+      <div class="form-step-title">Campaign Details</div>
+      <div class="form-fields">
+        <div class="form-group">
+          <label class="form-label">example</label>
+          <select class="form-input" id="contact">
+            <option>a</option><option>b</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Month</label>
+          <select class="form-input" id="month">
+            <option>may</option><option>jun</option><option>jul</option><option>aug</option>
+            <option>sep</option><option>oct</option><option>nov</option><option>dec</option>
+            <option>jan</option><option>feb</option><option>mar</option><option>apr</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration (secs)</label>
+          <div class="age-slider-row">
+            <input type="range" min="0" max="5000" value="328" id="durSlider" oninput="document.getElementById('durVal').textContent=this.value">
+            <span id="durVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:40px">328</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Campaign Count</label>
+          <div class="age-slider-row">
+            <input type="range" min="1" max="50" value="2" id="campSlider" oninput="document.getElementById('campVal').textContent=this.value">
+            <span id="campVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:28px">2</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">outcome</label>
+          <select class="form-input" id="poutcome">
+            <option>nonexistent</option><option>failure</option><option>success</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="prev-btn" onclick="nextStep(1)">◀ Prev</button>
+        <div class="form-step-dots">
+          <div class="dot active"></div>
+          <div class="dot active"></div>
+          <div class="dot"></div>
+        </div>
+        <button class="next-btn" onclick="nextStep(3)">Next</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Economic Indicators -->
+    <div class="form-panel" id="step3">
+      <div class="form-step-label">Step 3 of 4 — Economic Indicators</div>
+      <div class="form-step-title">Macro Context</div>
+      <div class="form-fields">
+        <div class="form-group">
+          <label class="form-label">Emp. Var. Rate</label>
+          <input type="number" class="form-input" value="1.1" id="empVar" step="0.1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cons. Price Idx</label>
+          <input type="number" class="form-input" value="93.994" id="cpi" step="0.001">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cons. Conf. Idx</label>
+          <input type="number" class="form-input" value="-36.4" id="cci" step="0.1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Euribor 3M</label>
+          <input type="number" class="form-input" value="4.857" id="euribor" step="0.001">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nr. Employees</label>
+          <input type="number" class="form-input" value="5191" id="nrEmployed">
+        </div>
+      </div>
+      <div class="form-footer">
+        <button class="prev-btn" onclick="nextStep(2)">◀ Prev</button>
+        <div class="form-step-dots">
+          <div class="dot active"></div>
+          <div class="dot active"></div>
+          <div class="dot active"></div>
+        </div>
+        <button class="next-btn" onclick="runPrediction()">⚡ Run Prediction</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Results -->
+    <div class="form-panel" id="step4">
+      <div id="resultContent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Olist</div>
+    <div class="footer-sub">Business Intelligence Platform</div>
+  </div>
+  <div class="footer-right">
+    Build your own analytics experience
+    <span style="color:var(--primary-light)">◆</span>
+  </div>
+</footer>
+
+<script src="js/cursor.js"></script>
+<script src="js/hero-canvas.js"></script>
+<script src="js/team.js"></script>
+<script src="js/scroll.js"></script>
+<script src="js/counter.js"></script>
+<script src="js/table.js"></script>
+<script src="js/prediction-engine.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/charts.js"></script>
+<script>
+// ===== DASHBOARD TAB SWITCHING =====
+function switchDashboard(tab, btn) {
+  // Update buttons
+  document.querySelectorAll('.dashboard-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Animate out current panel
+  const current = document.querySelector('.dashboard-panel.active');
+  if (current) {
+    current.classList.add('exiting');
+    setTimeout(() => {
+      current.classList.remove('active', 'exiting');
+    }, 300);
+  }
+
+  // Animate in new panel
+  const next = document.getElementById('dash-' + tab);
+  setTimeout(() => {
+    next.classList.add('active');
+  }, 150);
+}
+
+// Init duplicate charts for Customer Insights tab
+(function() {
+  const loanCtx2 = document.getElementById('loanChart2').getContext('2d');
+  new Chart(loanCtx2, {
+    type:'bar',
+    data:{
+      labels:['Young','Senior','Adult'],
+      datasets:[
+        { label:'Loan: Yes', data:[2100,4800,2700], backgroundColor:'#FF6B9D', borderWidth:0, borderRadius:4 },
+        { label:'Loan: No', data:[16000,14000,10200], backgroundColor:'#0066FF', borderWidth:0, borderRadius:4 },
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ labels:{ color:'#B8C5D6', font:{family:"'Inter',sans-serif",size:11} } } },
+      scales:{
+        x:{ grid:{color:'rgba(0,102,255,0.05)'}, ticks:{color:'#6B7C93',font:{size:11,family:"'Inter',sans-serif"}} },
+        y:{ grid:{color:'rgba(0,102,255,0.05)'}, ticks:{color:'#6B7C93',font:{size:11,family:"'Inter',sans-serif"}} }
+      }
+    }
+  });
+
+  const commitCtx2 = document.getElementById('commitChart2').getContext('2d');
+  new Chart(commitCtx2, {
+    type:'pie',
+    data:{
+      labels:['Level 0 — No commitment','Level 1 — Single','Level 2 — Dual'],
+      datasets:[{ data:[52,28,20], backgroundColor:['#00C853','#0066FF','#FF6B9D'], borderWidth:0, hoverOffset:8 }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#B8C5D6', font:{family:"'Inter',sans-serif",size:11}, boxWidth:12 } } }
+    }
+  });
+})();
+</script>
+</body>
+</html>

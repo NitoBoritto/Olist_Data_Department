@@ -1,0 +1,34 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  overflow-x: hidden;
+  cursor: default;
+  line-height: 1.6;
+}
+
+/* Custom Cursor */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--primary-light);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, var(--primary), var(--primary-light));
+  border-radius: 3px;
+}
