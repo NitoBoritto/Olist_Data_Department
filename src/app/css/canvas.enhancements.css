@@ -1,0 +1,182 @@
+/* ============================================================
+   BLUE TRADE CURRENT — canvas-enhancements.css
+   Olist Data Department | Canvas Container & Theme Styles
+   ============================================================ */
+
+/* ── Canvas Container ──────────────────────────────────────── */
+#heroCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none; /* let mouse events reach canvas via JS listener on window */
+  display: block;
+
+  /* Performance hints */
+  will-change: transform;
+  image-rendering: auto;
+
+  /* Smooth theme color transitions */
+  transition: opacity 0.4s ease;
+}
+
+/* Re-enable pointer events so mouse tracking works across the full canvas */
+#heroCanvas {
+  pointer-events: all;
+}
+
+/* ── Hero Section Base ────────────────────────────────────── */
+.hero,
+[class*="hero-section"],
+[class*="hero-wrapper"] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate; /* creates stacking context for z-index children */
+}
+
+/* Ensure hero content sits above canvas */
+.hero > *:not(#heroCanvas),
+.hero-content,
+.hero-pretitle,
+.hero-title,
+.hero-sub,
+.hero-btns,
+.hero-scroll {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Glassmorphism — bento cards over animated BG ─────────── */
+.bento-card,
+[class*="bento-card"] {
+  /* Backdrop blur for the canvas animation to bleed through beautifully */
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+
+  /* Smooth backdrop transitions when theme switches */
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Light mode glass */
+:root .bento-card {
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(0, 102, 255, 0.15);
+  box-shadow:
+    0 4px 24px rgba(0, 102, 255, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+:root .bento-card:hover {
+  background: rgba(255, 255, 255, 0.68);
+  border-color: rgba(0, 102, 255, 0.28);
+  box-shadow:
+    0 8px 40px rgba(0, 102, 255, 0.14),
+    0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+/* Dark mode glass */
+[data-theme="dark"] .bento-card {
+  background: rgba(0, 40, 85, 0.55);
+  border: 1px solid rgba(0, 217, 255, 0.14);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(0, 217, 255, 0.08) inset;
+}
+
+[data-theme="dark"] .bento-card:hover {
+  background: rgba(0, 55, 115, 0.68);
+  border-color: rgba(0, 217, 255, 0.28);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(0, 217, 255, 0.15) inset;
+}
+
+/* ── Canvas Fade on Theme Toggle ─────────────────────────── */
+/* Briefly fade canvas when theme attribute changes for a smooth swap */
+[data-theme-transitioning] #heroCanvas {
+  opacity: 0.4;
+}
+
+/* ── Reduced Motion Respect ──────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #heroCanvas {
+    display: none;
+  }
+}
+
+/* ── Mouse Cursor Enhancement ────────────────────────────── */
+/* Subtle custom cursor hint that the BG is interactive */
+.hero {
+  cursor: none;
+}
+
+.hero-cursor {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  background: var(--primary-light, #00D9FF);
+  opacity: 0.7;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.hero-cursor.active {
+  transform: translate(-50%, -50%) scale(2.4);
+  opacity: 0.4;
+}
+
+/* ── Dark Mode Background Transition ─────────────────────── */
+:root {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+/* ── Canvas Loading State ────────────────────────────────── */
+/* Shown before JS initialises the canvas */
+#heroCanvas[data-state="loading"] {
+  background: var(--bg, #FAFBFC);
+}
+
+[data-theme="dark"] #heroCanvas[data-state="loading"] {
+  background: var(--bg, #001F3D);
+}
+
+/* ── Performance: pause backdrop blur on scroll (optional) ── */
+/* Uncomment to boost scroll performance on lower-end devices  */
+/*
+body.is-scrolling .bento-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+*/
+
+/* ── Responsive Canvas Density ───────────────────────────── */
+/* Reduce visual complexity on small screens via CSS hint.
+   The JS reads this custom property to scale particle counts. */
+@media (max-width: 768px) {
+  :root {
+    --canvas-density: 0.5;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  :root {
+    --canvas-density: 0.75;
+  }
+}
+
+@media (min-width: 1281px) {
+  :root {
+    --canvas-density: 1;
+  }
+}
