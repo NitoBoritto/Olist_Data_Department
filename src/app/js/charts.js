@@ -100,3 +100,37 @@ new Chart(campaignCtx, {
     }
   }
 });
+// ===== YOUR EXISTING charts.js CODE ABOVE =====
+// (loanCtx, commitCtx, jobCtx, campaignCtx charts stay as-is)
+
+
+// ===== ADD THIS BELOW — called once your DB returns data =====
+
+// Example: fetch from your backend API, then call the update functions
+fetch('/api/dashboard/overview')          // ← your real endpoint
+  .then(res => res.json())
+  .then(data => {
+    window._lastOverviewData = data;
+    updateOverviewDashboard(data);
+  });
+
+fetch('/api/dashboard/sales')
+  .then(res => res.json())
+  .then(data => {
+    window._lastSalesData = data;
+    updateSalesDashboard(data);
+  });
+
+fetch('/api/dashboard/marketing')
+  .then(res => res.json())
+  .then(data => {
+    window._lastMarketingData = data;
+    updateMarketingDashboard(data);
+  });
+
+fetch('/api/dashboard/customers')
+  .then(res => res.json())
+  .then(data => {
+    window._lastCustomersData = data;
+    updateCustomersDashboard(data);
+  });
