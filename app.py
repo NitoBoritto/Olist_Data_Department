@@ -1,9 +1,11 @@
 import os
 from openai import OpenAI
+import os
+token = os.environ.get("HuggingFace_HUB_TOKEN")
 
 client = OpenAI(
     base_url="https://router.huggingface.co/v1",
-    api_key="REMOVED"
+    api_key=token
 )
 
 completion = client.chat.completions.create(
