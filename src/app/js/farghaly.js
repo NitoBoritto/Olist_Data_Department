@@ -16,8 +16,9 @@
   /* ═══════════════════════════════════════════════════════════
      ✏️  CONFIG — only edit these two lines
   ═══════════════════════════════════════════════════════════ */
-  const ANTHROPIC_API_KEY = 'REMOVED';   // ← paste your sk-ant-... key here
-  const MODEL             = 'claude-haiku-4-5-20251001';     // fast + cheap, change to claude-opus-4-5 for smarter
+  const token = process.env.HuggingFace_HUB_TOKEN;
+  const ANTHROPIC_API_KEY = token;
+  const MODEL             = 'Qwen/Qwen2.5-7B-Instruct:featherless-ai';     // fast + cheap, change to claude-opus-4-5 for smarter
 
   /* ═══════════════════════════════════════════════════════════
      SYSTEM PROMPT
