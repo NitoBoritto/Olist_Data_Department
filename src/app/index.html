@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/sections.css">
 <link rel="stylesheet" href="css/animations.css">
-<link rel="stylesheet" href="css/canvas-enhancements.css">
+<link rel="stylesheet" href="css/canvas.enhancements.css">
 <!-- 3m Farghaly Chat -->
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/farghaly.css">
@@ -870,187 +870,41 @@
   <div class="prediction-engine" id="predEngine" style="display:none">
     <div class="engine-header">
       <div class="engine-title">
-        ⚡ Prediction Engine
+        ⚡ Sentiment Prediction Engine
         <span style="background:var(--success);color:#fff;font-size:10px;padding:4px 10px;letter-spacing:0;border-radius:4px;">● Live</span>
       </div>
       <div class="engine-meta">
-        <span>Model: <span class="gold">LightGBM</span></span>
-        <span>ROC: <span class="gold">0.809</span></span>
+        <span>Model: <span class="gold">Logistic Regression + TF-IDF</span></span>
         <button class="collapse-btn" onclick="hidePredictionEngine()">✕ Collapse</button>
       </div>
     </div>
 
-    <div class="step-tabs">
-      <div class="step-tab active" data-step="1" id="tab1">
-        <div class="step-num">1</div> Configure
+    <!-- Single Page Form - Review Text Only -->
+    <div class="form-panel active" id="step1" style="display:flex; flex-direction:column; gap:20px;">
+      <div class="form-step-label">Sentiment Analysis</div>
+      <div class="form-step-title">Predict Review Sentiment</div>
+      
+      <div class="form-fields" style="width:100%;">
+        <!-- Review Text (Only Input) -->
+        <div class="form-group" style="width:100%;">
+          <label class="form-label">Review Text (Portuguese)</label>
+          <textarea class="form-input" id="reviewText" rows="8" placeholder="Digite o texto do comentário aqui..." style="width:100%; resize:vertical;">Produto excelente com entrega rapida</textarea>
+          <small style="color:var(--text-dimmer); margin-top:4px; display:block;">Minimum 10 characters required</small>
+        </div>
       </div>
-      <div class="step-tab" data-step="2" id="tab2">
-        <div class="step-num">2</div> Campaign
-      </div>
-      <div class="step-tab" data-step="3" id="tab3">
-        <div class="step-num">3</div> Economic
-      </div>
-      <div class="step-tab" data-step="4" id="tab4">
-        <div class="step-num">4</div> Execute
-      </div>
-    </div>
-    <div class="step-progress-bar" id="stepProgress" style="width:25%"></div>
 
-    <!-- Step 1: Client Profile -->
-    <div class="form-panel active" id="step1">
-      <div class="form-step-label">Step 1 of 4 — Client Profile Data</div>
-      <div class="form-step-title">Who is this client?</div>
-      <div class="form-fields">
-        <div class="form-group">
-          <label class="form-label">Age</label>
-          <div class="age-slider-row">
-            <input type="range" min="18" max="95" value="38" id="ageSlider" oninput="document.getElementById('ageVal').textContent=this.value">
-            <span id="ageVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:32px">38</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="jobType">
-            <option>a</option><option>b</option><option>c</option>
-            <option>d</option><option>e</option><option>f</option>
-            <option>g</option><option>h</option><option>i</option>
-            <option>j</option><option>k</option><option>l</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="marital">
-            <option>a</option><option>b</option><option>c</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="education">
-            <option>a</option><option>b</option>
-            <option>c</option><option>d</option><option>e</option>
-            <option>f</option><option>g</option><option>h</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="creditDefault">
-            <option>a</option><option>b</option><option>c</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="housingLoan">
-            <option>a</option><option>b</option><option>c</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="personalLoan">
-            <option>a</option><option>b</option><option>c</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-footer">
-        <div class="form-step-dots">
-          <div class="dot active"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-        <button class="next-btn" onclick="nextStep(2)">Next</button>
-      </div>
-    </div>
+      <!-- Result Display -->
+      <div id="resultContent" style="width:100%; display:none;"></div>
 
-    <!-- Step 2: Campaign Data -->
-    <div class="form-panel" id="step2">
-      <div class="form-step-label">Step 2 of 4 — Campaign Data</div>
-      <div class="form-step-title">Campaign Details</div>
-      <div class="form-fields">
-        <div class="form-group">
-          <label class="form-label">example</label>
-          <select class="form-input" id="contact">
-            <option>a</option><option>b</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Month</label>
-          <select class="form-input" id="month">
-            <option>may</option><option>jun</option><option>jul</option><option>aug</option>
-            <option>sep</option><option>oct</option><option>nov</option><option>dec</option>
-            <option>jan</option><option>feb</option><option>mar</option><option>apr</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Duration (secs)</label>
-          <div class="age-slider-row">
-            <input type="range" min="0" max="5000" value="328" id="durSlider" oninput="document.getElementById('durVal').textContent=this.value">
-            <span id="durVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:40px">328</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Campaign Count</label>
-          <div class="age-slider-row">
-            <input type="range" min="1" max="50" value="2" id="campSlider" oninput="document.getElementById('campVal').textContent=this.value">
-            <span id="campVal" style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--primary-light);min-width:28px">2</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">outcome</label>
-          <select class="form-input" id="poutcome">
-            <option>nonexistent</option><option>failure</option><option>success</option>
-          </select>
-        </div>
+      <!-- Action Buttons -->
+      <div class="form-footer" style="width:100%; justify-content:center; gap:12px; padding-top:20px; border-top:1px solid var(--border);">
+        <button class="next-btn" onclick="runPrediction()" style="padding:12px 32px; font-size:14px;">
+          ⚡ Run Prediction
+        </button>
+        <button class="action-btn danger" onclick="hidePredictionEngine()" style="padding:12px 32px; font-size:14px;">
+          Close
+        </button>
       </div>
-      <div class="form-footer">
-        <button class="prev-btn" onclick="nextStep(1)">◀ Prev</button>
-        <div class="form-step-dots">
-          <div class="dot active"></div>
-          <div class="dot active"></div>
-          <div class="dot"></div>
-        </div>
-        <button class="next-btn" onclick="nextStep(3)">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 3: Economic Indicators -->
-    <div class="form-panel" id="step3">
-      <div class="form-step-label">Step 3 of 4 — Economic Indicators</div>
-      <div class="form-step-title">Macro Context</div>
-      <div class="form-fields">
-        <div class="form-group">
-          <label class="form-label">Emp. Var. Rate</label>
-          <input type="number" class="form-input" value="1.1" id="empVar" step="0.1">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Cons. Price Idx</label>
-          <input type="number" class="form-input" value="93.994" id="cpi" step="0.001">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Cons. Conf. Idx</label>
-          <input type="number" class="form-input" value="-36.4" id="cci" step="0.1">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Euribor 3M</label>
-          <input type="number" class="form-input" value="4.857" id="euribor" step="0.001">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nr. Employees</label>
-          <input type="number" class="form-input" value="5191" id="nrEmployed">
-        </div>
-      </div>
-      <div class="form-footer">
-        <button class="prev-btn" onclick="nextStep(2)">◀ Prev</button>
-        <div class="form-step-dots">
-          <div class="dot active"></div>
-          <div class="dot active"></div>
-          <div class="dot active"></div>
-        </div>
-        <button class="next-btn" onclick="runPrediction()">⚡ Run Prediction</button>
-      </div>
-    </div>
-
-    <!-- Step 4: Results -->
-    <div class="form-panel" id="step4">
-      <div id="resultContent"></div>
     </div>
   </div>
 </section>
@@ -1066,76 +920,6 @@
     <span style="color:var(--primary-light)">◆</span>
   </div>
 </footer>
-
-<!-- ═══ 3m FARGHALY FLOATING CHAT ═══ -->
-
-<!-- Floating trigger button (visible when chat is closed) -->
-<button class="chat-fab" id="chatFab" onclick="toggleFarghaly()" title="Chat with 3m Farghaly">
-  🤖
-  <span class="fab-badge"></span>
-</button>
-
-<!-- Chat window (hidden by default) -->
-<div class="farghaly-window" id="farghalyWindow" style="display:none">
-
-  <!-- Header -->
-  <div class="chat-header">
-    <div class="avatar-wrap">
-      <div class="avatar">🤖</div>
-      <span class="status-dot"></span>
-    </div>
-    <div class="header-info">
-      <div class="bot-name">
-        3m Farghaly
-        <span class="bot-badge">AI</span>
-      </div>
-      <div class="bot-status">Online — Ready to crunch data</div>
-    </div>
-    <div class="header-actions">
-      <button class="hdr-btn" title="Clear chat" onclick="window._farghaly?.clear()">🗑️</button>
-      <button class="hdr-btn" title="Export chat" onclick="window._farghaly?.export()">💾</button>
-      <button class="hdr-btn" title="Close" onclick="toggleFarghaly()">✕</button>
-    </div>
-  </div>
-
-  <!-- Quick prompts -->
-  <div class="quick-prompts" data-farghaly="quick-prompts"></div>
-
-  <!-- Messages -->
-  <div class="messages-area" data-farghaly="messages">
-    <div class="welcome-card" data-farghaly="welcome">
-      <div class="welcome-icon">🤖</div>
-      <div class="welcome-title">Salut! I'm 3m Farghaly</div>
-      <div class="welcome-sub">
-        Your elite Olist data buddy. Ask me about company history, SQL queries,
-        delivery times, top sellers — anything. I don't bite… datasets do. 😈
-      </div>
-      <hr class="welcome-divider" />
-      <div style="font-size:11px;color:var(--text-dimmer);">
-        🔗 Olist Dataset &nbsp;·&nbsp; ⚡ FastAPI Backend
-      </div>
-    </div>
-  </div>
-
-  <!-- Input -->
-  <div class="input-area">
-    <div class="input-row">
-      <textarea
-        data-farghaly="input"
-        rows="1"
-        placeholder="Ask 3m Farghaly anything…"
-        maxlength="1000"
-      ></textarea>
-      <button class="send-btn" data-farghaly="send" title="Send (Enter)">➤</button>
-    </div>
-    <div class="input-footer">
-      <span class="input-hint">⏎ Send &nbsp;·&nbsp; ⇧⏎ New line</span>
-      <span class="char-count" data-farghaly="char-count">0 / 1000</span>
-    </div>
-  </div>
-
-</div>
-<!-- ═══ END FARGHALY ═══ -->
 
 <script src="js/cursor.js"></script>
 <script src="js/hero-canvas.js"></script>
