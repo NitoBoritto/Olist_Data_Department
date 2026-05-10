@@ -51,16 +51,17 @@ function generateClusteringData() {
 }
 
 // Generate heatmap data for cluster characteristics
+// Values are actual scaled centroids from K-means clustering
 function generateHeatmapData() {
   return {
     clusters: ['Champions', 'Frustrated Critics', 'Dormant Advocates', 'Silent Disengaged', 'Promising Newcomers'],
-    features: ['Monetary', 'Delivery Time', 'Recency', 'Review Score', 'Engagement'],
+    features: ['Monetary', 'Delivery Time', 'Recency', 'Review Score', 'Gave Review'],
     values: [
-      [0.85, 0.92, 0.88, 0.95, 0.90], // Champions
-      [0.45, 0.25, 0.60, 0.15, 0.20], // Frustrated Critics
-      [0.35, 0.75, 0.15, 0.78, 0.35], // Dormant Advocates
-      [0.50, 0.55, 0.50, 0.50, 0.45], // Silent Disengaged
-      [0.40, 0.85, 0.92, 0.82, 0.75]  // Promising Newcomers
+      [0.98, 0.33, -0.35, 0.74, 0.70],  // Champions: High spend, decent delivery, responsive, satisfied
+      [0.13, 0.75, -0.03, -1.85, 0.71], // Frustrated Critics: Low spend, slow delivery, very dissatisfied, vocal
+      [-0.33, 0.08, 1.05, 0.71, 0.71],  // Dormant Advocates: Low spend, old purchases, but satisfied
+      [-0.03, 0.01, 0.02, -0.65, -1.40],// Silent Disengaged: Average everywhere, dissatisfied, never reviews
+      [-0.56, -0.80, -0.77, 0.75, 0.71] // Promising Newcomers: Low spend, fast delivery, recent, satisfied
     ]
   };
 }
@@ -173,7 +174,7 @@ function renderClusterHeatmap(data) {
   const hoverText = data.values.map((row, clusterIdx) =>
     row.map((val, featureIdx) =>
       `<b>${data.clusters[clusterIdx]}</b><br>` +
-      `${data.features[featureIdx]}: ${(val * 100).toFixed(1)}%<extra></extra>`
+      `${data.features[featureIdx]}: ${val.toFixed(2)}<extra></extra>`
     )
   );
   
@@ -184,8 +185,14 @@ function renderClusterHeatmap(data) {
     type: 'heatmap',
     colorscale: 'RdBu',
     reversescale: false,
-    text: hoverText,
-    hovertemplate: '%{text}',
+    text: normalizedValues,
+    texttemplate: '%{text:.2f}',
+    textfont: {
+      color: '#222',
+      size: 11
+    },
+    hovertext: hoverText,
+    hoverinfo: 'text',
     colorbar: {
       title: '<b>Normalized<br>Value</b>',
       thickness: 15,
