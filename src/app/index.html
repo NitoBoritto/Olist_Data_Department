@@ -870,105 +870,41 @@
   <div class="prediction-engine" id="predEngine" style="display:none">
     <div class="engine-header">
       <div class="engine-title">
-        ⚡ Prediction Engine
+        ⚡ Sentiment Prediction Engine
         <span style="background:var(--success);color:#fff;font-size:10px;padding:4px 10px;letter-spacing:0;border-radius:4px;">● Live</span>
       </div>
       <div class="engine-meta">
-        <span>Model: <span class="gold">LightGBM</span></span>
-        <span>ROC: <span class="gold">0.809</span></span>
+        <span>Model: <span class="gold">Logistic Regression + TF-IDF</span></span>
         <button class="collapse-btn" onclick="hidePredictionEngine()">✕ Collapse</button>
       </div>
     </div>
 
-    <div class="step-tabs">
-      <div class="step-tab active" data-step="1" id="tab1">
-        <div class="step-num">1</div> Features
-      </div>
-      <div class="step-tab" data-step="2" id="tab2">
-        <div class="step-num">2</div> Text Input
-      </div>
-      <div class="step-tab" data-step="3" id="tab3">
-        <div class="step-num">3</div> Predict
-      </div>
-    </div>
-    <div class="step-progress-bar" id="stepProgress" style="width:33%"></div>
-
-    <!-- Step 1: Features -->
-    <div class="form-panel active" id="step1">
-      <div class="form-step-label">Step 1 of 3 — Feature Selection</div>
-      <div class="form-step-title">Model Features</div>
-      <div class="form-fields">
-        <div class="form-group">
-          <label class="form-label">Order Status</label>
-          <select class="form-input" id="orderStatus">
-            <option value="delivered">delivered</option>
-            <option value="canceled">canceled</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Primary Payment Type</label>
-          <select class="form-input" id="paymentType">
-            <option value="credit card">credit card</option>
-            <option value="boleto">boleto</option>
-            <option value="debit card">debit card</option>
-            <option value="voucher">voucher</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total Payment</label>
-          <input type="number" class="form-input" id="totalPayment" value="0" step="0.01">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Delivery Days Actual</label>
-          <input type="number" class="form-input" id="deliveryDays" value="0" step="1">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Late Delivery</label>
-          <input type="checkbox" id="isLateDelivery">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Invalid Payment</label>
-          <input type="checkbox" id="isInvalidPayment">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Category</label>
-          <input type="text" class="form-input" id="categoryInput" value="Eletronicos">
-        </div>
-      </div>
-      <div class="form-footer">
-        <div class="form-step-dots">
-          <div class="dot active"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-        <button class="next-btn" onclick="nextStep(2)">Next</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Text Input -->
-    <div class="form-panel" id="step2">
-      <div class="form-step-label">Step 2 of 3 — Portuguese Text</div>
-      <div class="form-step-title">Review Text</div>
-      <div class="form-fields">
-        <div class="form-group" style="width:100%">
+    <!-- Single Page Form - Review Text Only -->
+    <div class="form-panel active" id="step1" style="display:flex; flex-direction:column; gap:20px;">
+      <div class="form-step-label">Sentiment Analysis</div>
+      <div class="form-step-title">Predict Review Sentiment</div>
+      
+      <div class="form-fields" style="width:100%;">
+        <!-- Review Text (Only Input) -->
+        <div class="form-group" style="width:100%;">
           <label class="form-label">Review Text (Portuguese)</label>
-          <textarea class="form-input" id="reviewText" rows="6" placeholder="Digite o texto do comentário aqui...">Produto excelente com entrega rapida</textarea>
+          <textarea class="form-input" id="reviewText" rows="8" placeholder="Digite o texto do comentário aqui..." style="width:100%; resize:vertical;">Produto excelente com entrega rapida</textarea>
+          <small style="color:var(--text-dimmer); margin-top:4px; display:block;">Minimum 10 characters required</small>
         </div>
       </div>
-      <div class="form-footer">
-        <button class="prev-btn" onclick="nextStep(1)">◀ Prev</button>
-        <div class="form-step-dots">
-          <div class="dot"></div>
-          <div class="dot active"></div>
-          <div class="dot"></div>
-        </div>
-        <button class="next-btn" onclick="runPrediction()">Predict</button>
-      </div>
-    </div>
 
-    <!-- Step 3: Results -->
-    <div class="form-panel" id="step3">
-      <div id="resultContent"></div>
+      <!-- Result Display -->
+      <div id="resultContent" style="width:100%; display:none;"></div>
+
+      <!-- Action Buttons -->
+      <div class="form-footer" style="width:100%; justify-content:center; gap:12px; padding-top:20px; border-top:1px solid var(--border);">
+        <button class="next-btn" onclick="runPrediction()" style="padding:12px 32px; font-size:14px;">
+          ⚡ Run Prediction
+        </button>
+        <button class="action-btn danger" onclick="hidePredictionEngine()" style="padding:12px 32px; font-size:14px;">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </section>

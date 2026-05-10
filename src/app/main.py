@@ -66,23 +66,13 @@ async def predict_sentiment_endpoint(request: SentimentRequest) -> SentimentResp
     Returns sentiment label, confidence score, and delivery context.
     """
     try:
-        result = predict_sentiment(
-            text=request.text,
-            delivery_status=request.delivery_status,
-            category=request.category,
-            order_status=request.order_status,
-            primary_payment_type=request.primary_payment_type,
-            total_payment=request.total_payment,
-            delivery_days_actual=request.delivery_days_actual,
-            is_late_delivery=request.is_late_delivery,
-            is_invalid_payment=request.is_invalid_payment,
-        )
+        result = await predict_sentiment(text=request.text)
         
         return SentimentResponse(
             sentiment=result["sentiment"],
             confidence=result["confidence"],
-            delivery_context=result["delivery_context"],
-            category=result["category"],
+            delivery_context="Sentiment analysis from review text",
+            category="General",
         )
     except ValueError as e:
         # Validation error

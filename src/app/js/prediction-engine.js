@@ -1,5 +1,4 @@
-// ===== PREDICTION ENGINE =====
-let currentStep = 1;
+// ===== PREDICTION ENGINE (SIMPLIFIED - TEXT ONLY) =====
 
 function showPredictionEngine(){
   const engine = document.getElementById('predEngine');
@@ -11,70 +10,34 @@ function showPredictionEngine(){
 function hidePredictionEngine(){
   document.getElementById('predEngine').style.display = 'none';
   document.getElementById('runPredBtn').style.display = 'flex';
-}
-
-function nextStep(step){
-  // Bound step between 1 and 3
-  step = Math.max(1, Math.min(3, step));
-
-  document.getElementById('step'+currentStep).classList.remove('active');
-  document.getElementById('tab'+currentStep).classList.remove('active');
-  if(step > currentStep) document.getElementById('tab'+currentStep).classList.add('done');
-
-  currentStep = step;
-
-  document.getElementById('step'+step).classList.add('active');
-  document.getElementById('tab'+step).classList.add('active');
-  document.getElementById('stepProgress').style.width = (step/3*100)+'%';
-
-  document.querySelectorAll('.step-tab').forEach((t,i) => {
-    const s = i+1;
-    if(s < step) { t.classList.remove('active'); t.classList.add('done'); }
-    else if(s === step) { t.classList.add('active'); t.classList.remove('done'); }
-    else { t.classList.remove('active','done'); }
-  });
+  // Clear results when closing
+  document.getElementById('resultContent').style.display = 'none';
 }
 
 async function runPrediction(){
-  // Collect features
-  const order_status = document.getElementById('orderStatus').value;
-  const primary_payment_type = document.getElementById('paymentType').value;
-  const total_payment = parseFloat(document.getElementById('totalPayment').value) || 0.0;
-  const delivery_days_actual = parseFloat(document.getElementById('deliveryDays').value) || 0.0;
-  const is_late_delivery = document.getElementById('isLateDelivery').checked;
-  const is_invalid_payment = document.getElementById('isInvalidPayment').checked;
-  const category = document.getElementById('categoryInput').value || '';
+  // Collect input (only review text)
   const text = document.getElementById('reviewText').value || '';
 
-  // Validate inputs
-  if(!text.trim()){
-    alert('Please enter review text');
+  // Validate input
+  if(!text.trim() || text.trim().length < 10){
+    alert('Please enter review text (minimum 10 characters)');
     return;
   }
 
-  // Determine delivery_status expected by API
-  const delivery_status = is_late_delivery ? 'late' : 'on_time';
-
-  // Move to results panel
-  document.getElementById('step'+currentStep).classList.remove('active');
-  document.getElementById('tab'+currentStep).classList.remove('active');
-  currentStep = 3;
-  document.getElementById('step3').classList.add('active');
-  document.getElementById('tab3').classList.add('active');
-  document.getElementById('stepProgress').style.width = '100%';
-
   const result = document.getElementById('resultContent');
+  
   // Disable Predict button to prevent double submissions
-  const predictBtn = document.querySelector('#step2 .next-btn');
+  const predictBtn = document.querySelector('.form-footer .next-btn');
   if(predictBtn){ predictBtn.disabled = true; predictBtn.classList.add('loading'); }
 
   // Show spinner + message
   result.innerHTML = `
-    <div style="padding:24px;display:flex;align-items:center;gap:12px">
+    <div style="padding:24px;display:flex;align-items:center;gap:12px;background:rgba(0,102,255,0.05);border-radius:8px;border-left:4px solid #0066FF">
       <svg width="28" height="28" viewBox="0 0 50 50" style="animation:spin 1s linear infinite"><circle cx="25" cy="25" r="20" fill="none" stroke="#0066FF" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.4 31.4"></circle></svg>
-      <div>Running prediction…</div>
+      <div style="color:var(--text);">Running prediction…</div>
     </div>
   `;
+  result.style.display = 'block';
 
   // Small inline spinner animation style (injected once)
   if(!document.getElementById('prediction-spinner-style')){
@@ -87,21 +50,22 @@ async function runPrediction(){
   try{
     const payload = {
       text: text,
-      delivery_status: delivery_status,
-      category: category,
-      order_status: order_status,
-      primary_payment_type: primary_payment_type,
-      total_payment: total_payment,
-      delivery_days_actual: delivery_days_actual,
-      is_late_delivery: is_late_delivery,
-      is_invalid_payment: is_invalid_payment,
     };
+
+    // Create timeout abort controller (30 seconds)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 30000);
 
     const resp = await fetch('/api/predict/sentiment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if(!resp.ok){
       const txt = await resp.text();
@@ -113,8 +77,6 @@ async function runPrediction(){
     // Render results
     const sentiment = data.sentiment || 'Unknown';
     const confidence = (data.confidence || 0) * 100;
-    const delivery_context = data.delivery_context || '';
-    const respCategory = data.category || category;
 
     const verdictYes = sentiment === 'Positive';
 
@@ -124,7 +86,7 @@ async function runPrediction(){
           <div class="result-icon">${verdictYes ? '✓' : '✕'}</div>
           <div>
             <div class="result-verdict">${sentiment}</div>
-            <div class="result-sub">${delivery_context}</div>
+            <div class="result-sub">Sentiment prediction from review text</div>
           </div>
         </div>
 
@@ -134,39 +96,42 @@ async function runPrediction(){
             <span class="metric-value">${confidence.toFixed(1)}%</span>
           </div>
           <div class="result-metric">
-            <span class="metric-label">Category</span>
-            <span class="metric-value">${respCategory}</span>
+            <span class="metric-label">Text Length</span>
+            <span class="metric-value">${text.length} chars</span>
           </div>
         </div>
 
         <div class="feature-inputs">
-          <span class="fi-label">Features used</span>
+          <span class="fi-label">Model Info</span>
           <div class="fi-tags">
-            <span class="fi-tag">order_status: <span>${order_status}</span></span>
-            <span class="fi-tag">payment_type: <span>${primary_payment_type}</span></span>
-            <span class="fi-tag">total_payment: <span>${total_payment}</span></span>
-            <span class="fi-tag">delivery_days: <span>${delivery_days_actual}</span></span>
-            <span class="fi-tag">is_late: <span>${is_late_delivery}</span></span>
-            <span class="fi-tag">is_invalid_payment: <span>${is_invalid_payment}</span></span>
+            <span class="fi-tag">Algorithm: <span>Logistic Regression</span></span>
+            <span class="fi-tag">Features: <span>TF-IDF Vectorization</span></span>
           </div>
         </div>
 
         <div class="result-actions">
-          <button class="action-btn primary" onclick="nextStep(1)">Run New</button>
+          <button class="action-btn primary" onclick="document.getElementById('reviewText').focus(); document.getElementById('reviewText').select();">Run New</button>
           <button class="action-btn danger" onclick="hidePredictionEngine()">Close</button>
         </div>
       </div>
     `;
 
   }catch(err){
-    result.innerHTML = `<div style="padding:24px;color:var(--danger)">Prediction failed: ${err.message}</div>`;
-    console.error(err);
+    let errorMsg = 'Prediction failed';
+    
+    // Distinguish between error types
+    if(err.name === 'AbortError'){
+      errorMsg = 'Request timed out after 30 seconds. The server may be busy. Please try again.';
+    }else if(err instanceof TypeError){
+      errorMsg = 'Network error: Unable to reach the server. Check your connection.';
+    }else if(err.message){
+      errorMsg = `Prediction failed: ${err.message}`;
+    }
+    
+    result.innerHTML = `<div style="padding:24px;color:var(--danger);background:rgba(220,38,38,0.1);border-radius:8px;border-left:4px solid var(--danger)">${errorMsg}</div>`;
+    console.error('Prediction error:', err);
   } finally {
     // Re-enable predict button
     if(predictBtn){ predictBtn.disabled = false; predictBtn.classList.remove('loading'); }
   }
-}
-
-function copyResult(prob, verdict){
-  navigator.clipboard.writeText(`Prediction: ${verdict} | Confidence: ${prob}%`);
 }

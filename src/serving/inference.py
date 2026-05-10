@@ -4,9 +4,10 @@ Inference module for Olist ML serving.
 Loads the trained sentiment model and provides prediction functions.
 """
 
-import pandas as pd
 import joblib
 import sys
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Dict
 
@@ -18,6 +19,7 @@ if str(project_root) not in sys.path:
 # Load models at module import time (not per call)
 _sentiment_model = None
 _sentiment_label_mapping = None
+_executor = ThreadPoolExecutor(max_workers=4)  # Thread pool for blocking model predictions
 
 
 def _load_models():
@@ -43,67 +45,43 @@ def _load_models():
             _sentiment_label_mapping = {0: "Negative", 1: "Positive"}
 
 
-def predict_sentiment(
-    text: str,
-    delivery_status: str,
-    category: str,
-    order_status: str = "delivered",
-    primary_payment_type: str = "credit_card",
-    total_payment: float = 0.0,
-    delivery_days_actual: float = 0.0,
-    is_late_delivery: bool = False,
-    is_invalid_payment: bool = False,
-) -> Dict:
+async def predict_sentiment(text: str) -> Dict:
     """
     Predict sentiment for review text.
     
     Args:
         text: Review text (Portuguese)
-        delivery_status: 'on_time' or 'late'
-        category: Product category
-        order_status: Order status (delivered, shipped, etc.)
-        primary_payment_type: Payment method used
-        total_payment: Total payment amount
-        delivery_days_actual: Actual delivery days
-        is_late_delivery: Whether delivery was late
-        is_invalid_payment: Whether payment was invalid
     
     Returns:
-        Dictionary with sentiment, confidence, delivery_context, category
+        Dictionary with sentiment and confidence
     """
     _load_models()
     
     if _sentiment_model is None:
         raise RuntimeError("Sentiment model not loaded. Ensure model exists at src/serving/models/sentiment_model/")
     
-    # Prepare input with all features the model was trained on
-    df = pd.DataFrame({
-        "review_text": [text],
-        "primary_payment_type": [primary_payment_type],
-        "order_status": [order_status],
-        "delivery_days_actual": [float(delivery_days_actual)],
-        "total_payment": [float(total_payment)],
-        "is_late_delivery": [bool(is_late_delivery)],
-        "is_invalid_payment": [bool(is_invalid_payment)],
-    })
-    
-    # Get predictions (numeric)
+    # Get predictions (numeric) using executor to avoid blocking event loop
     try:
-        prediction_numeric = _sentiment_model.predict(df)[0]
-        probabilities = _sentiment_model.predict_proba(df)[0]
+        # Wrap blocking model.predict() in run_in_executor
+        loop = asyncio.get_event_loop()
+        prediction_numeric = await loop.run_in_executor(
+            _executor,
+            lambda: _sentiment_model.predict([text])[0]
+        )
+        
+        # Wrap blocking model.predict_proba() in run_in_executor
+        probabilities = await loop.run_in_executor(
+            _executor,
+            lambda: _sentiment_model.predict_proba([text])[0]
+        )
     except Exception as e:
         raise RuntimeError(f"Model prediction failed: {str(e)}")
     
     # Decode numeric prediction to sentiment label
     sentiment_label = _sentiment_label_mapping.get(int(prediction_numeric), "Unknown")
-    
     confidence = float(max(probabilities))
-    
-    delivery_context = f"Status: {delivery_status}"
     
     return {
         "sentiment": sentiment_label,
         "confidence": confidence,
-        "delivery_context": delivery_context,
-        "category": category,
     }
