@@ -6,6 +6,7 @@
 <title>Olist — Business Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
@@ -28,6 +29,7 @@
   <div class="side-dot" data-section="team"></div>
   <div class="side-dot" data-section="performance"></div>
   <div class="side-dot" data-section="analytics"></div>
+  <div class="side-dot" data-section="segmentation"></div>
   <div class="side-dot" data-section="features"></div>
   <div class="side-dot" data-section="dataset"></div>
   <div class="side-dot" data-section="pipeline"></div>
@@ -44,6 +46,7 @@
     <li><a href="#team">Team</a></li>
     <li><a href="#performance">Overview</a></li>
     <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#segmentation">Segmentation</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#pipeline">Pipeline</a></li>
     <li><a href="#ai-engine">AI Engine</a></li>
@@ -702,6 +705,94 @@
   </div><!-- /bento-grid-2 -->
 </div><!-- /dash-customers -->
 
+</section><!-- /analytics -->
+
+<!-- CUSTOMER SEGMENTATION SECTION -->
+<section id="segmentation">
+  <div class="section-tag">03 — Intelligence</div>
+  <h2 class="section-title reveal">Customer<br>Segmentation</h2>
+  <p class="section-desc reveal">Advanced clustering analysis reveals five distinct customer segments based on behavioral, monetary, and satisfaction metrics.</p>
+
+  <div class="segmentation-container reveal">
+    <!-- 3D Cluster Visualization -->
+    <div class="segmentation-card">
+      <div class="segment-card-header">
+        <div>
+          <div class="segment-title">3D Customer Segmentation</div>
+          <div class="segment-sub">K-Means clustering with PCA dimensionality reduction · Interactive 3D view</div>
+        </div>
+        <span class="segment-badge">Live</span>
+      </div>
+      <div class="segment-chart" id="clustering-3d" style="height:600px;"></div>
+      <div class="segment-info">
+        <div class="info-stat">
+          <span class="info-label">Total Customers</span>
+          <span class="info-value" id="seg-total">—</span>
+        </div>
+        <div class="info-stat">
+          <span class="info-label">Clusters</span>
+          <span class="info-value">5</span>
+        </div>
+        <div class="info-stat">
+          <span class="info-label">Method</span>
+          <span class="info-value">K-Means</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cluster Characteristics Heatmap -->
+    <div class="segmentation-card">
+      <div class="segment-card-header">
+        <div>
+          <div class="segment-title">Cluster Characteristics Analysis</div>
+          <div class="segment-sub">Normalized feature comparison across segments · Hover for values</div>
+        </div>
+        <span class="segment-badge">Interactive</span>
+      </div>
+      <div class="segment-chart" id="clustering-heatmap" style="height:400px;"></div>
+    </div>
+  </div>
+
+  <!-- Cluster Interpretation Cards -->
+  <div class="cluster-cards reveal" style="margin-top:40px;">
+    <div class="cluster-interpretation">
+      <div class="cluster-badge" style="background:#FF6B6B;">●</div>
+      <div class="cluster-info">
+        <div class="cluster-name">Champions</div>
+        <div class="cluster-desc">High-value customers with strong engagement and satisfaction. Recent purchases, positive reviews.</div>
+      </div>
+    </div>
+    <div class="cluster-interpretation">
+      <div class="cluster-badge" style="background:#4ECDC4;">●</div>
+      <div class="cluster-info">
+        <div class="cluster-name">Frustrated Critics</div>
+        <div class="cluster-desc">Vocal about dissatisfaction. Average spend, slow deliveries, negative feedback.</div>
+      </div>
+    </div>
+    <div class="cluster-interpretation">
+      <div class="cluster-badge" style="background:#45B7D1;">●</div>
+      <div class="cluster-info">
+        <div class="cluster-name">Dormant Advocates</div>
+        <div class="cluster-desc">Historical happy customers. Low activity now, but left positive reviews in the past.</div>
+      </div>
+    </div>
+    <div class="cluster-interpretation">
+      <div class="cluster-badge" style="background:#FFA07A;">●</div>
+      <div class="cluster-info">
+        <div class="cluster-name">Silent Disengaged</div>
+        <div class="cluster-desc">Average across all metrics. Slightly dissatisfied, rarely engage with reviews.</div>
+      </div>
+    </div>
+    <div class="cluster-interpretation">
+      <div class="cluster-badge" style="background:#98D8C8;">●</div>
+      <div class="cluster-info">
+        <div class="cluster-name">Promising Newcomers</div>
+        <div class="cluster-desc">New customers with fast deliveries and high satisfaction. Potential high-value segment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURES SECTION -->
 <section id="features">
   <div class="section-tag">03 — Capabilities</div>
@@ -931,6 +1022,7 @@
 <script src="js/theme.js"></script>
 <script src="js/charts.js"></script>
 <script src="js/dashboard.js"></script>
+<script src="js/segmentation.js"></script>
 <script>
 // ===== DASHBOARD TAB SWITCHING =====
 function switchDashboard(tab, btn) {

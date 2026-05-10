@@ -108,11 +108,6 @@ async function runPrediction(){
             <span class="fi-tag">Features: <span>TF-IDF Vectorization</span></span>
           </div>
         </div>
-
-        <div class="result-actions">
-          <button class="action-btn primary" onclick="document.getElementById('reviewText').focus(); document.getElementById('reviewText').select();">Run New</button>
-          <button class="action-btn danger" onclick="hidePredictionEngine()">Close</button>
-        </div>
       </div>
     `;
 
