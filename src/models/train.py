@@ -19,17 +19,17 @@ if str(project_root) not in sys.path:
 
 
 def train_sentiment_model(
-    X_train: pd.DataFrame,
+    X_train: pd.Series,
     y_train: pd.Series,
     best_params: Dict[str, Any],
     random_state: int = 30,
 ) -> Tuple[Pipeline, Dict[int, str]]:
     """
-    Train Logistic Regression model for sentiment classification (best-performing model).
+    Train Logistic Regression model for sentiment classification.
     
     Args:
-        X_train: Training features
-        y_train: Training labels (numeric: 0=Negative, 1=Positive)
+        X_train: Series of review_text strings
+        y_train: Series of sentiment labels (Positive/Negative)
         best_params: Hyperparameters from tuning
         random_state: Random state for reproducibility
     
@@ -48,10 +48,10 @@ def train_sentiment_model(
         y_train_encoded = y_train
         label_mapping = {0: 'Negative', 1: 'Positive'}
     
-    feature_transformer = build_sentiment_features()
+    vectorizer = build_sentiment_features()
     classifier = LogisticRegression(random_state=random_state, max_iter=1000)
     pipeline = Pipeline([
-        ("preprocessor", feature_transformer),
+        ("vectorizer", vectorizer),
         ("classifier", classifier),
     ])
     

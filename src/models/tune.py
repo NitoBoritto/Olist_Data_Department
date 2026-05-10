@@ -30,15 +30,22 @@ optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
 def tune_sentiment_classifier(
-    X_train: pd.DataFrame,
+    X_train: pd.Series,
     y_train: pd.Series,
     n_trials: int = 50,
     random_state: int = 30,
 ) -> Dict[str, Any]:
     """
-    Tune Logistic Regression for sentiment classification (the best-performing model).
+    Tune Logistic Regression for sentiment classification.
     
-    Returns optimized hyperparameters for LogisticRegression.
+    Args:
+        X_train: Series of review_text strings
+        y_train: Series of sentiment labels (Positive/Negative)
+        n_trials: Number of tuning trials
+        random_state: Random state for reproducibility
+    
+    Returns:
+        Dictionary with optimized hyperparameters
     """
     print(f"[TUNE] Starting Logistic Regression sentiment tuning ({n_trials} trials)...")
     
@@ -50,11 +57,10 @@ def tune_sentiment_classifier(
     else:
         y_train_encoded = y_train
     
-    preprocessor = build_sentiment_features()
+    vectorizer = build_sentiment_features()
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=random_state)
 
     def objective(trial):
-        max_features = trial.suggest_int("preprocessor__vectorizer__max_features", 500, 2500, step=500)
         lgr_params = {
             "classifier__C": trial.suggest_float("classifier__C", 0.01, 10.0, log=True),
             "classifier__max_iter": trial.suggest_int("classifier__max_iter", 1000, 3000),
@@ -62,13 +68,10 @@ def tune_sentiment_classifier(
         }
 
         pipeline = Pipeline([
-            ("preprocessor", clone(preprocessor)),
-            ("classifier", LogisticRegression(random_state=random_state, max_iter=1000)),
+            ("vectorizer", clone(vectorizer)),
+            ("classifier", LogisticRegression(random_state=random_state)),
         ])
-        pipeline.set_params(
-            preprocessor__vectorizer__max_features=max_features,
-            **lgr_params,
-        )
+        pipeline.set_params(**lgr_params)
 
         scores = cross_val_score(
             pipeline,

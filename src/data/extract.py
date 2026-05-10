@@ -48,15 +48,8 @@ def extract_sentiment_data(
     
     query = """
     SELECT 
-        customer_unique_id,
         review_score,
-        primary_payment_type,
-        order_status,
-        delivery_days_actual,
-        total_payment,
-        review_text,
-        is_late_delivery,
-        is_invalid_payment
+        review_text
     FROM Gold.Fact_Orders
     WHERE review_text IS NOT NULL
     """
