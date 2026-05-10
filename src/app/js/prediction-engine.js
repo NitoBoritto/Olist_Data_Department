@@ -37,6 +37,9 @@ function nextStep(step){
 
 async function runPrediction(){
   // Collect features
+  console.log('step:', currentStep);
+  console.log('step el:', document.getElementById('step'+currentStep));
+  console.log('tab el:', document.getElementById('tab'+currentStep));
   const order_status = document.getElementById('orderStatus').value;
   const primary_payment_type = document.getElementById('paymentType').value;
   const total_payment = parseFloat(document.getElementById('totalPayment').value) || 0.0;
