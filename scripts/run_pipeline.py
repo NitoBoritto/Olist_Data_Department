@@ -73,15 +73,7 @@ def run_sentiment_pipeline(
             # Split data
             print("\n[3/6] SPLITTING DATA...")
             X_train, X_test, y_train, y_test = train_test_split(
-                df_clean[[
-                    "review_text",
-                    "primary_payment_type",
-                    "order_status",
-                    "delivery_days_actual",
-                    "total_payment",
-                    "is_late_delivery",
-                    "is_invalid_payment",
-                ]],
+                df_clean["review_text"],
                 df_clean["sentiment_encoded"],
                 test_size=0.2,
                 stratify=df_clean["sentiment_encoded"],

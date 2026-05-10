@@ -20,8 +20,8 @@ def build_sentiment_features() -> TfidfVectorizer:
     
     vectorizer = TfidfVectorizer(
         ngram_range=(1, 2),
-        min_df=5,
-        max_df=0.9,
+        min_df=7,
+        max_df=0.8,
         max_features=2000,
     )
     
