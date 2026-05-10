@@ -3,10 +3,10 @@
 // Cluster color palette
 const CLUSTER_COLORS = {
   'Champions': '#FF6B6B',
-  'Frustrated Critics': '#4ECDC4',
+  'Frustrated Critics': '#abd414',
   'Dormant Advocates': '#45B7D1',
   'Silent Disengaged': '#FFA07A',
-  'Promising Newcomers': '#98D8C8'
+  'Promising Newcomers': '#0bf3b9'
 };
 
 // Initialize segmentation visualizations
@@ -20,7 +20,7 @@ function initializeSegmentation() {
   renderClusterHeatmap(heatmapData);
   
   // Update total customers count
-  const totalCustomers = clusteringData.points.length;
+  const totalCustomers = 93358;
   document.getElementById('seg-total').textContent = totalCustomers.toLocaleString();
 }
 
@@ -184,7 +184,8 @@ function renderClusterHeatmap(data) {
     y: data.clusters,
     type: 'heatmap',
     colorscale: 'RdBu',
-    reversescale: false,
+    reversescale: true,
+    zmid: 0, // Ensures the color center is neutral at 0
     text: normalizedValues,
     texttemplate: '%{text:.2f}',
     textfont: {
