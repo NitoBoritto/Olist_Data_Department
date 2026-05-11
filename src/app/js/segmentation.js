@@ -1,5 +1,12 @@
 // ===== CUSTOMER SEGMENTATION VISUALIZATION =====
 
+// Get theme-aware color from CSS variables
+function getThemeAwareColor(cssVariableName) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(cssVariableName)
+    .trim();
+}
+
 // Cluster color palette
 const CLUSTER_COLORS = {
   'Champions': '#FF6B6B',
@@ -108,29 +115,38 @@ function render3DClusterPlot(data) {
   
   const plotlyTraces = Object.values(traces);
   
+  // Get theme-aware text color
+  const textColor = getThemeAwareColor('--text-dim') || '#B8C5D6';
+  
   const layout = {
     title: {
       text: '<b>Interactive 3D Customer Segmentation</b>',
-      font: { size: 14, family: 'Inter, sans-serif' }
+      font: { size: 14, family: 'Inter, sans-serif', color: textColor }
     },
     scene: {
       xaxis: {
         title: 'PC1 (45%)',
         backgroundcolor: 'rgba(240, 240, 240, 0.5)',
         gridcolor: 'rgba(200, 200, 200, 0.3)',
-        showbackground: true
+        showbackground: true,
+        titlefont: { color: textColor },
+        tickfont: { color: textColor }
       },
       yaxis: {
         title: 'PC2 (28%)',
         backgroundcolor: 'rgba(240, 240, 240, 0.5)',
         gridcolor: 'rgba(200, 200, 200, 0.3)',
-        showbackground: true
+        showbackground: true,
+        titlefont: { color: textColor },
+        tickfont: { color: textColor }
       },
       zaxis: {
         title: 'PC3 (15%)',
         backgroundcolor: 'rgba(240, 240, 240, 0.5)',
         gridcolor: 'rgba(200, 200, 200, 0.3)',
-        showbackground: true
+        showbackground: true,
+        titlefont: { color: textColor },
+        tickfont: { color: textColor }
       },
       camera: {
         eye: { x: 1.5, y: 1.5, z: 1.3 }
@@ -143,12 +159,14 @@ function render3DClusterPlot(data) {
       y: 0.98,
       bgcolor: 'rgba(255, 255, 255, 0.8)',
       bordercolor: 'rgba(0, 0, 0, 0.2)',
-      borderwidth: 1
+      borderwidth: 1,
+      font: { color: textColor }
     },
     hovermode: 'closest',
     paper_bgcolor: 'rgba(0, 0, 0, 0)',
     plot_bgcolor: 'rgba(250, 250, 250, 0.3)',
-    font: { family: 'Inter, sans-serif', size: 10, color: '#555' }
+    font: { family: 'Inter, sans-serif', size: 10, color: textColor },
+    autosize: true
   };
   
   const config = {
@@ -159,6 +177,7 @@ function render3DClusterPlot(data) {
   };
   
   Plotly.newPlot(container, plotlyTraces, layout, config);
+  container.dataset.plotType = '3d-cluster';
 }
 
 // Render cluster characteristics heatmap
@@ -178,6 +197,9 @@ function renderClusterHeatmap(data) {
     )
   );
   
+  // Get theme-aware text color
+  const textColor = getThemeAwareColor('--text-dim') || '#B8C5D6';
+  
   const trace = {
     z: normalizedValues,
     x: data.features,
@@ -189,7 +211,7 @@ function renderClusterHeatmap(data) {
     text: normalizedValues,
     texttemplate: '%{text:.2f}',
     textfont: {
-      color: '#222',
+      color: textColor,
       size: 11
     },
     hovertext: hoverText,
@@ -198,30 +220,35 @@ function renderClusterHeatmap(data) {
       title: '<b>Normalized<br>Value</b>',
       thickness: 15,
       len: 0.7,
-      x: 1.02
+      x: 1.02,
+      tickfont: { color: textColor },
+      titlefont: { color: textColor }
     }
   };
   
   const layout = {
     title: {
       text: '<b>Cluster Characteristics Matrix</b>',
-      font: { size: 14, family: 'Inter, sans-serif' }
+      font: { size: 14, family: 'Inter, sans-serif', color: textColor }
     },
     xaxis: {
       title: '<b>Features</b>',
       side: 'bottom',
-      tickfont: { size: 11 }
+      tickfont: { color: textColor, size: 11 },
+      titlefont: { color: textColor }
     },
     yaxis: {
       title: '<b>Customer Segments</b>',
-      tickfont: { size: 11 },
+      tickfont: { color: textColor, size: 11 },
+      titlefont: { color: textColor },
       autorange: 'reversed'
     },
     margin: { l: 150, r: 100, b: 80, t: 60 },
     paper_bgcolor: 'rgba(0, 0, 0, 0)',
     plot_bgcolor: 'rgba(250, 250, 250, 0.3)',
-    font: { family: 'Inter, sans-serif', size: 11, color: '#555' },
-    hovermode: 'closest'
+    font: { family: 'Inter, sans-serif', size: 11, color: textColor },
+    hovermode: 'closest',
+    autosize: true
   };
   
   const config = {
@@ -232,6 +259,52 @@ function renderClusterHeatmap(data) {
   };
   
   Plotly.newPlot(container, [trace], layout, config);
+  container.dataset.plotType = 'heatmap';
+}
+
+// Re-render segmentation charts when theme changes
+if (typeof MutationObserver !== 'undefined') {
+  const observer = new MutationObserver(() => {
+    const clusteringContainer = document.getElementById('clustering-3d');
+    const heatmapContainer = document.getElementById('clustering-heatmap');
+    
+    // Re-render 3D plot if it exists
+    if (clusteringContainer && clusteringContainer.data) {
+      const newTextColor = getThemeAwareColor('--text-dim') || '#B8C5D6';
+      Plotly.relayout(clusteringContainer, {
+        'font.color': newTextColor,
+        'scene.xaxis.titlefont.color': newTextColor,
+        'scene.xaxis.tickfont.color': newTextColor,
+        'scene.yaxis.titlefont.color': newTextColor,
+        'scene.yaxis.tickfont.color': newTextColor,
+        'scene.zaxis.titlefont.color': newTextColor,
+        'scene.zaxis.tickfont.color': newTextColor,
+        'legend.font.color': newTextColor,
+        'title.font.color': newTextColor
+      });
+    }
+    
+    // Re-render heatmap if it exists
+    if (heatmapContainer && heatmapContainer.data) {
+      const newTextColor = getThemeAwareColor('--text-dim') || '#B8C5D6';
+      Plotly.restyle(heatmapContainer, { 'textfont.color': newTextColor }, 0);
+      Plotly.relayout(heatmapContainer, {
+        'font.color': newTextColor,
+        'xaxis.tickfont.color': newTextColor,
+        'xaxis.titlefont.color': newTextColor,
+        'yaxis.tickfont.color': newTextColor,
+        'yaxis.titlefont.color': newTextColor,
+        'title.font.color': newTextColor,
+        'colorbar.tickfont.color': newTextColor,
+        'colorbar.titlefont.color': newTextColor
+      });
+    }
+  });
+  
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
 }
 
 // Initialize when page loads

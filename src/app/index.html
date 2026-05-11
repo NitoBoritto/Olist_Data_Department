@@ -42,7 +42,6 @@
   <ul class="nav-links">
     <li><a href="#team">Team</a></li>
     <li><a href="#analytics">Overview</a></li>
-    <li><a href="#analytics">Analytics</a></li>
     <li><a href="#segmentation">Segmentation</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#pipeline">Pipeline</a></li>
@@ -246,30 +245,26 @@
     <div class="dashboard-chart-grid reveal">
       <article class="dashboard-chart-card chart-span-full">
         <header>
-          <h4>Product Value Density</h4>
-          <span>Bubble</span>
+          <h4>Time Series Sales Forecasting</h4>
+          <span>Line + MA7</span>
         </header>
-        <div id="exec-value-density-chart" class="plotly-host"></div>
+        <div id="sales-time-series-chart" class="plotly-host"></div>
       </article>
     </div>
   </div>
 
   <div class="dashboard-panel" id="dash-sales">
     <div class="dashboard-kpi-grid reveal">
-      <article class="dashboard-kpi-card"><p>Top Category</p><h3 id="sales-kpi-top-category">--</h3></article>
-      <article class="dashboard-kpi-card"><p>Top Category Share %</p><h3 id="sales-kpi-top-category-share">--</h3></article>
-      <article class="dashboard-kpi-card"><p>Freight Cost Ratio</p><h3 id="sales-kpi-freight-ratio">--</h3></article>
-      <article class="dashboard-kpi-card"><p>Products in Catalog</p><h3 id="sales-kpi-products">--</h3></article>
-      <article class="dashboard-kpi-card"><p>Pareto Concentration</p><h3 id="sales-kpi-pareto">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Top Revenue Category</p><h3 id="sales-kpi-top-category">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Highest Freight Burden %</p><h3 id="sales-kpi-freight-ratio">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Lowest Satisfaction Score</p><h3 id="sales-kpi-lowest-satisfaction">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Top Seller State</p><h3 id="sales-kpi-top-seller-state">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Revenue Concentration %</p><h3 id="sales-kpi-concentration">--</h3></article>
     </div>
     <div class="dashboard-chart-grid reveal">
-      <article class="dashboard-chart-card">
+      <article class="dashboard-chart-card chart-span-full">
         <header><h4>Revenue by Category Analysis</h4><span>Bar</span></header>
         <div id="sales-revenue-category-chart" class="plotly-host"></div>
-      </article>
-      <article class="dashboard-chart-card">
-        <header><h4>Time Series Sales and Forecast</h4><span>Line + MA7</span></header>
-        <div id="sales-time-series-chart" class="plotly-host"></div>
       </article>
     </div>
   </div>
@@ -304,12 +299,8 @@
     </div>
     <div class="dashboard-chart-grid reveal">
       <article class="dashboard-chart-card chart-span-full">
-        <header><h4>Customer Distribution Map (Brazil)</h4><span>scattermapbox</span></header>
+        <header><h4>Customer Distribution Map - State Density</h4><span>scattermapbox (aggregated by state)</span></header>
         <div id="customer-map-chart" class="plotly-host map-host"></div>
-      </article>
-      <article class="dashboard-chart-card chart-span-full">
-        <header><h4>Review Score Distribution by Delivery Status</h4><span>Grouped Bar</span></header>
-        <div id="customer-review-status-chart" class="plotly-host"></div>
       </article>
     </div>
   </div>
@@ -411,57 +402,57 @@
   <div class="features-grid">
     <div class="feature-card reveal" style="transition-delay:0.1s">
       <span class="feature-num">01</span>
-      <span class="feature-icon">👤</span>
-      <div class="feature-name">example</div>
-      <div class="feature-desc">example description</div>
+      <span class="feature-icon">📊</span>
+      <div class="feature-name">Multi-Dashboard Analytics</div>
+      <div class="feature-desc">Four interactive real-time dashboards delivering actionable insights across sales, marketing, customer, and operational metrics with live KPI cards and trend analysis.</div>
       <div class="feature-tags">
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">Real-time KPIs</span>
+        <span class="feature-tag">4 Dashboards</span>
+        <span class="feature-tag">SQL Aggregation</span>
       </div>
     </div>
     <div class="feature-card reveal" style="transition-delay:0.2s">
       <span class="feature-num">02</span>
       <span class="feature-icon">📈</span>
-      <div class="feature-name">example</div>
-      <div class="feature-desc">example description</div>
+      <div class="feature-name">Sales & Revenue Analysis</div>
+      <div class="feature-desc">Deep-dive into revenue performance by product category, freight cost analysis, customer satisfaction metrics, and concentration analysis to identify revenue drivers and margin risks.</div>
       <div class="feature-tags">
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">Category Breakdown</span>
+        <span class="feature-tag">Margin Analysis</span>
+        <span class="feature-tag">Trend Forecasting</span>
       </div>
     </div>
     <div class="feature-card reveal" style="transition-delay:0.3s">
       <span class="feature-num">03</span>
       <span class="feature-icon">🧠</span>
-      <div class="feature-name">example</div>
-      <div class="feature-desc">example description</div>
+      <div class="feature-name">AI Sentiment Intelligence</div>
+      <div class="feature-desc">Machine learning-powered sentiment analysis for Portuguese e-commerce reviews. Binary classification with TF-IDF feature extraction and logistic regression identifies customer satisfaction patterns.</div>
       <div class="feature-tags">
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">NLP Pipeline</span>
+        <span class="feature-tag">ML Classification</span>
+        <span class="feature-tag">Portuguese Support</span>
       </div>
     </div>
     <div class="feature-card reveal" style="transition-delay:0.4s">
       <span class="feature-num">04</span>
-      <span class="feature-icon">⚡</span>
-      <div class="feature-name">example</div>
-      <div class="feature-desc">example description</div>
+      <span class="feature-icon">🗺️</span>
+      <div class="feature-name">Geospatial Intelligence</div>
+      <div class="feature-desc">Interactive state-level customer distribution mapping showing customer density, delivery performance impact, and regional metrics to optimize market strategies and logistics operations.</div>
       <div class="feature-tags">
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">Mapbox Integration</span>
+        <span class="feature-tag">State Clustering</span>
+        <span class="feature-tag">Delivery Impact</span>
       </div>
     </div>
     <div class="feature-card reveal" style="transition-delay:0.5s">
       <span class="feature-num">05</span>
-      <span class="feature-icon">📋</span>
-      <div class="feature-name">example</div>
-      <div class="feature-desc">example description</div>
+      <span class="feature-icon">⚙️</span>
+      <div class="feature-name">End-to-End ML Orchestration</div>
+      <div class="feature-desc">Complete data science pipeline with automated data extraction, feature engineering, hyperparameter tuning, model training, evaluation, and MLflow tracking for reproducible ML workflows.</div>
       <div class="feature-tags">
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
-        <span class="feature-tag">blabla</span>
+        <span class="feature-tag">Optuna Tuning</span>
+        <span class="feature-tag">MLflow Tracking</span>
+        <span class="feature-tag">Docker Ready</span>
       </div>
     </div>
   </div>

@@ -98,23 +98,60 @@ function getKpiByAliases(kpis, aliases) {
   );
 }
 
+function getThemeAwareColor(cssVariableName) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(cssVariableName)
+    .trim();
+}
+
 function renderPlot(targetId, traces, layout = {}) {
   const container = document.getElementById(targetId);
   if (!container) {
     return;
   }
+  
+  // Get theme-aware text color (defaults to dark mode color for fallback)
+  const textColor = getThemeAwareColor("--text-dim") || "#B8C5D6";
+  
   Plotly.newPlot(
     container,
     traces,
     {
+      autosize: true,
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "rgba(0,0,0,0)",
       margin: { t: 30, r: 20, b: 50, l: 60 },
-      font: { family: "Inter, sans-serif", color: "#B8C5D6", size: 12 },
+      font: { family: "Inter, sans-serif", color: textColor, size: 12 },
       ...layout,
     },
-    PLOTLY_CONFIG,
+    {
+      ...PLOTLY_CONFIG,
+      responsive: true,
+    },
   );
+}
+
+// Re-render all plots when theme changes
+if (typeof MutationObserver !== "undefined") {
+  const observer = new MutationObserver(() => {
+    // Get all plotly chart containers and update their font colors
+    const plotlyContainers = document.querySelectorAll(".plotly-host");
+    if (plotlyContainers.length > 0) {
+      const newTextColor = getThemeAwareColor("--text-dim") || "#B8C5D6";
+      plotlyContainers.forEach((container) => {
+        if (container.data && container.layout) {
+          Plotly.relayout(container, {
+            "font.color": newTextColor,
+          });
+        }
+      });
+    }
+  });
+  
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
 }
 
 function movingAverage(values, windowSize = 7) {
@@ -155,39 +192,39 @@ function loadOverviewKpis(payload) {
 function loadSalesKpis(payload) {
   const rows = payloadToRows(payload);
 
-  const topCategory = getKpiByAliases(rows, ["top_category"]);
-  const topCategoryShare = getKpiByAliases(rows, ["top_category_share", "top_category_share_pct"]);
-  const freightCostRatio = getKpiByAliases(rows, ["freight_cost_ratio"]);
-  const productsInCatalog = getKpiByAliases(rows, ["products_in_catalog"]);
-  const paretoConcentration = getKpiByAliases(rows, ["pareto_concentration"]);
+  const topCategory = getKpiByAliases(rows, ["top revenue category", "top_revenue_category"]);
+  const freightBurden = getKpiByAliases(rows, ["highest freight burden", "highest_freight_burden"]);
+  const lowestSatisfaction = getKpiByAliases(rows, ["lowest customer satisfaction", "lowest_customer_satisfaction"]);
+  const topSellerState = getKpiByAliases(rows, ["top seller state (revenue)", "top_seller_state_revenue"]);
+  const concentrationRate = getKpiByAliases(rows, ["product revenue concentration", "product_revenue_concentration"]);
 
   setText("sales-kpi-top-category", topCategory ? String(topCategory.context_value || topCategory.kpi_value) : "--");
   setText(
-    "sales-kpi-top-category-share",
-    topCategoryShare ? formatPercent(topCategoryShare.kpi_value) : "--",
-  );
-  setText(
     "sales-kpi-freight-ratio",
-    freightCostRatio ? formatPercent(freightCostRatio.kpi_value) : "--",
+    freightBurden ? String(freightBurden.context_value || freightBurden.kpi_value) : "--",
   );
   setText(
-    "sales-kpi-products",
-    productsInCatalog ? formatNumber(productsInCatalog.kpi_value) : "--",
+    "sales-kpi-lowest-satisfaction",
+    lowestSatisfaction ? Number(lowestSatisfaction.kpi_value).toFixed(2) : "--",
   );
   setText(
-    "sales-kpi-pareto",
-    paretoConcentration ? formatPercent(paretoConcentration.kpi_value) : "--",
+    "sales-kpi-top-seller-state",
+    topSellerState ? String(topSellerState.context_value || topSellerState.kpi_value) : "--",
+  );
+  setText(
+    "sales-kpi-concentration",
+    concentrationRate ? formatPercent(concentrationRate.kpi_value) : "--",
   );
 }
 
 function loadMarketingKpis(payload) {
   const rows = payloadToRows(payload);
 
-  const totalMqls = getKpiByAliases(rows, ["total_mqls"]);
-  const conversionRate = getKpiByAliases(rows, ["funnel_conversion_rate"]);
-  const avgTimeToClose = getKpiByAliases(rows, ["avg_time_to_close"]);
-  const sellersAcquired = getKpiByAliases(rows, ["sellers_acquired"]);
-  const unconvertedLeads = getKpiByAliases(rows, ["unconverted_leads"]);
+  const totalMqls = getKpiByAliases(rows, ["total mqls", "total_mqls"]);
+  const conversionRate = getKpiByAliases(rows, ["funnel conversion rate", "funnel_conversion_rate"]);
+  const avgTimeToClose = getKpiByAliases(rows, ["average days to close", "avg_time_to_close", "days_to_close"]);
+  const sellersAcquired = getKpiByAliases(rows, ["sellers acquired", "sellers_acquired"]);
+  const unconvertedLeads = getKpiByAliases(rows, ["unconverted leads", "unconverted_leads"]);
 
   setText("marketing-kpi-total-mqls", totalMqls ? formatNumber(totalMqls.kpi_value) : "--");
   setText("marketing-kpi-conversion", conversionRate ? formatPercent(conversionRate.kpi_value) : "--");
@@ -199,32 +236,34 @@ function loadMarketingKpis(payload) {
 function loadCustomerKpis(payload) {
   const rows = payloadToRows(payload);
 
-  const totalUnique = getKpiByAliases(rows, ["total_unique_customers"]);
-  const repeatRate = getKpiByAliases(rows, ["repeat_customer_rate"]);
-  const reviewAvgs = getKpiByAliases(rows, ["on_time_late_review_avgs", "on_time_late_review_avg"]);
-  const ltv = getKpiByAliases(rows, ["ltv"]);
-  const npsProxy = getKpiByAliases(rows, ["nps_proxy"]);
+  const totalUnique = getKpiByAliases(rows, ["largest customer market (by volume)", "total_unique_customers"]);
+  const repeatRate = getKpiByAliases(rows, ["repeat customer rate", "repeat_customer_rate"]);
+  const deliveryImpact = getKpiByAliases(rows, ["late delivery impact on review score", "delivery_impact_review"]);
+  const ltv = getKpiByAliases(rows, ["average customer lifetime value (ltv)", "ltv", "lifetime_value"]);
+  const npsProxy = getKpiByAliases(rows, ["customer satisfaction score (nps proxy)", "nps_proxy"]);
 
   setText("customer-kpi-unique", totalUnique ? formatNumber(totalUnique.kpi_value) : "--");
   setText("customer-kpi-repeat", repeatRate ? formatPercent(repeatRate.kpi_value) : "--");
   setText(
     "customer-kpi-review-avgs",
-    reviewAvgs ? String(reviewAvgs.context_value || reviewAvgs.kpi_value) : "--",
+    deliveryImpact ? Number(deliveryImpact.kpi_value).toFixed(2) : "--",
   );
   setText("customer-kpi-ltv", ltv ? formatCurrency(ltv.kpi_value) : "--");
-  setText("customer-kpi-nps", npsProxy ? Number(npsProxy.kpi_value).toFixed(2) : "--");
+  setText("customer-kpi-nps", npsProxy ? formatPercent(npsProxy.kpi_value) : "--");
 }
 
 function renderExecutiveValueDensity(payload) {
   const rows = payloadToRows(payload);
-  if (!rows.length) {
+  // Filter out rows with null/None category names
+  const filteredRows = rows.filter((d) => d.category_name_en && d.category_name_en !== "None" && d.category_name_en !== null);
+  if (!filteredRows.length) {
     return;
   }
 
-  const x = rows.map((d) => toNumber(d.avg_weight || d.avg_weight_g, 0));
-  const y = rows.map((d) => toNumber(d.avg_unit_price || d.avg_price, 0));
-  const revenue = rows.map((d) => toNumber(d.total_revenue || d.total_item_value, 0));
-  const labels = rows.map((d) => d.category_name_en || d.category || "Unknown");
+  const x = filteredRows.map((d) => toNumber(d.x || d.avg_weight || d.avg_weight_g, 0));
+  const y = filteredRows.map((d) => toNumber(d.y || d.avg_unit_price || d.avg_price, 0));
+  const revenue = filteredRows.map((d) => toNumber(d.size || d.total_revenue || d.total_item_value, 0));
+  const labels = filteredRows.map((d) => d.category_name_en || d.category || "Unknown");
 
   const maxRevenue = Math.max(...revenue, 1);
   const sizeref = (2.0 * maxRevenue) / (80 ** 2);
@@ -388,27 +427,56 @@ function renderCustomerMap(payload) {
     return;
   }
 
-  const latitudes = rows.map((item) => toNumber(item.latitude || item.lat, 0));
-  const longitudes = rows.map((item) => toNumber(item.longitude || item.lng || item.lon, 0));
-  const customers = rows.map((item) => toNumber(item.customers || item.count, 0));
+  // Aggregate data by state: count customers and calculate average review score
+  const stateMap = {};
+  rows.forEach((item) => {
+    const state = item.customer_state || item.state || "Unknown";
+    if (!stateMap[state]) {
+      stateMap[state] = {
+        count: 0,
+        totalScore: 0,
+        lat: toNumber(item.latitude || item.lat, 0),
+        lon: toNumber(item.longitude || item.lng || item.lon, 0),
+      };
+    }
+    stateMap[state].count += 1;
+    stateMap[state].totalScore += toNumber(item.review_score || item.score, 0);
+  });
+
+  const stateLabels = Object.keys(stateMap);
+  const latitudes = stateLabels.map((state) => stateMap[state].lat);
+  const longitudes = stateLabels.map((state) => stateMap[state].lon);
+  const customerCounts = stateLabels.map((state) => stateMap[state].count);
+  const avgScores = stateLabels.map((state) => stateMap[state].totalScore / stateMap[state].count);
 
   renderPlot(
     "customer-map-chart",
     [
       {
         type: "scattermapbox",
-        mode: "markers",
+        mode: "markers+text",
         lat: latitudes,
         lon: longitudes,
-        text: rows.map((item) => item.state || item.city || "Brazil"),
+        text: stateLabels,
+        textposition: "middle center",
+        textfont: { color: "white", size: 10, family: "Arial Black" },
         marker: {
-          size: customers.map((value) => Math.max(6, Math.sqrt(value))),
-          color: customers,
-          colorscale: "Blues",
+          size: customerCounts.map((c) => Math.max(15, Math.min(50, Math.sqrt(c / 2)))),
+          color: avgScores,
+          colorscale: "RdYlGn",
+          cmin: 1,
+          cmax: 5,
+          colorbar: {
+            title: "Avg Review",
+            thickness: 15,
+            len: 0.7,
+          },
           showscale: true,
-          opacity: 0.7,
+          opacity: 0.8,
+          line: { color: "white", width: 2 },
         },
-        hovertemplate: "<b>%{text}</b><br>Customers: %{marker.color:,.0f}<extra></extra>",
+        hovertemplate: "<b>%{text}</b><br>Customers: %{customdata[0]}<br>Avg Review Score: %{marker.color:.2f}/5<extra></extra>",
+        customdata: stateLabels.map((state) => [stateMap[state].count]),
       },
     ],
     {
@@ -422,66 +490,16 @@ function renderCustomerMap(payload) {
   );
 }
 
-function renderReviewDistribution(payload) {
-  const rows = payloadToRows(payload);
-  if (!rows.length) {
-    return;
-  }
-
-  const scores = ["1", "2", "3", "4", "5"];
-  const onTime = new Array(5).fill(0);
-  const late = new Array(5).fill(0);
-
-  rows.forEach((item) => {
-    const score = String(item.review_score || item.score || "");
-    const index = scores.indexOf(score);
-    if (index < 0) {
-      return;
-    }
-    const value = toNumber(item.count || item.total, 0);
-    const isLate = item.is_late_delivery === true || String(item.is_late_delivery).toLowerCase() === "true";
-    if (isLate) {
-      late[index] += value;
-    } else {
-      onTime[index] += value;
-    }
-  });
-
-  renderPlot(
-    "customer-review-status-chart",
-    [
-      {
-        type: "bar",
-        name: "On-Time Delivery",
-        x: scores,
-        y: onTime,
-        marker: { color: "#2DC653" },
-      },
-      {
-        type: "bar",
-        name: "Late Delivery",
-        x: scores,
-        y: late,
-        marker: { color: "#FF4D6D" },
-      },
-    ],
-    {
-      barmode: "group",
-      xaxis: { title: "Review Score" },
-      yaxis: { title: "Number of Reviews", gridcolor: "rgba(255,255,255,0.08)" },
-      legend: { orientation: "h", y: 1.14 },
-    },
-  );
-}
+// Review distribution chart removed - not needed per user requirements
 
 async function initOverview() {
   try {
-    const [overviewPayload, valueDensityPayload] = await Promise.all([
+    const [kpisPayload, timeSeriesPayload] = await Promise.all([
       fetchJson(DASHBOARD_ENDPOINTS.overview),
-      fetchJson(DASHBOARD_ENDPOINTS.execValueDensity),
+      fetchJson(DASHBOARD_ENDPOINTS.salesTimeSeries),
     ]);
-    loadOverviewKpis(overviewPayload);
-    renderExecutiveValueDensity(valueDensityPayload);
+    loadOverviewKpis(kpisPayload);
+    renderSalesTimeSeries(timeSeriesPayload);
   } catch (error) {
     console.warn("Overview dashboard data unavailable:", error);
   }
@@ -489,14 +507,12 @@ async function initOverview() {
 
 async function initSales() {
   try {
-    const [kpisPayload, categoryPayload, seriesPayload] = await Promise.all([
+    const [kpisPayload, revenuePayload] = await Promise.all([
       fetchJson(DASHBOARD_ENDPOINTS.salesKpis),
       fetchJson(DASHBOARD_ENDPOINTS.salesRevenueByCategory),
-      fetchJson(DASHBOARD_ENDPOINTS.salesTimeSeries),
     ]);
     loadSalesKpis(kpisPayload);
-    renderSalesRevenueByCategory(categoryPayload);
-    renderSalesTimeSeries(seriesPayload);
+    renderSalesRevenueByCategory(revenuePayload);
   } catch (error) {
     console.warn("Sales dashboard data unavailable:", error);
   }
@@ -519,14 +535,12 @@ async function initMarketing() {
 
 async function initCustomers() {
   try {
-    const [kpisPayload, mapPayload, reviewPayload] = await Promise.all([
+    const [kpisPayload, mapPayload] = await Promise.all([
       fetchJson(DASHBOARD_ENDPOINTS.customerKpis),
       fetchJson(DASHBOARD_ENDPOINTS.customerMap),
-      fetchJson(DASHBOARD_ENDPOINTS.customerReviewDistribution),
     ]);
     loadCustomerKpis(kpisPayload);
     renderCustomerMap(mapPayload);
-    renderReviewDistribution(reviewPayload);
   } catch (error) {
     console.warn("Customer dashboard data unavailable:", error);
   }
