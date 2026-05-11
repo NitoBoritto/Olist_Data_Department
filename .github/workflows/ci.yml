@@ -17,7 +17,7 @@ env:
   REGISTRY: docker.io
   # 2. Change Image Name to: your-docker-username/your-repo-name
   # Replace 'ahmedwalid' with your actual Docker Hub username
-  IMAGE_NAME: ahmedwalid/olist-bi 
+  IMAGE_NAME: nitoboritto/olist-ecommerce
 
 jobs:
   test:
