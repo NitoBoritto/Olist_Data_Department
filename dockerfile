@@ -37,16 +37,19 @@ RUN groupadd --gid 1001 appgroup \
  && useradd  --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
 
 # Runtime system deps (ODBC driver for Azure SQL, spaCy model download)
+# 1. Install initial tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libgomp1 \
         unixodbc \
         curl \
         gnupg2 \
+    # 2. Register the Microsoft repository keys and list
     && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
-       | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] \
-       https://packages.microsoft.com/debian/12/prod bookworm main" \
-       > /etc/apt/sources.list.d/mssql-release.list \
+        | gpg --dearmor -o /usr/share/keyrings/microsoft.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" \
+        > /etc/apt/sources.list.d/mssql-release.list \
+    # 3. CRITICAL: Run update AGAIN so apt sees msodbcsql18
+    && apt-get update \
     && ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
     && rm -rf /var/lib/apt/lists/*
 
