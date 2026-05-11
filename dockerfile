@@ -30,7 +30,7 @@ FROM python:3.11-slim AS runtime
 # Labels (OCI standard)
 LABEL org.opencontainers.image.title="olist-bi" \
       org.opencontainers.image.description="Olist Business Intelligence — FastAPI ML Serving" \
-      org.opencontainers.image.source="https://github.com/${{ github.repository }}"
+      org.opencontainers.image.source="https://github.com/NitoBoritto/Olist_Data_Department"
 
 # Non-root user for security
 RUN groupadd --gid 1001 appgroup \
