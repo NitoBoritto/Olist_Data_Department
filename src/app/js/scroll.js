@@ -1,5 +1,5 @@
 // ===== SCROLL REVEAL & SIDE DOTS =====
-const sections = ['hero','team','performance','analytics','features','dataset','pipeline','ai-engine'];
+const sections = ['hero','team','analytics','segmentation','features','pipeline','ai-engine'];
 const sideDots = document.querySelectorAll('.side-dot');
 const reveals = document.querySelectorAll('.reveal');
 

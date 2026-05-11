@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Olist — Business Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/base.css">
@@ -27,11 +26,9 @@
 <div class="side-indicator" id="sideIndicator">
   <div class="side-dot active" data-section="hero"></div>
   <div class="side-dot" data-section="team"></div>
-  <div class="side-dot" data-section="performance"></div>
   <div class="side-dot" data-section="analytics"></div>
   <div class="side-dot" data-section="segmentation"></div>
   <div class="side-dot" data-section="features"></div>
-  <div class="side-dot" data-section="dataset"></div>
   <div class="side-dot" data-section="pipeline"></div>
   <div class="side-dot" data-section="ai-engine"></div>
 </div>
@@ -44,7 +41,7 @@
   </div>
   <ul class="nav-links">
     <li><a href="#team">Team</a></li>
-    <li><a href="#performance">Overview</a></li>
+    <li><a href="#analytics">Overview</a></li>
     <li><a href="#analytics">Analytics</a></li>
     <li><a href="#segmentation">Segmentation</a></li>
     <li><a href="#features">Features</a></li>
@@ -71,7 +68,7 @@
     </h1>
     <p class="hero-sub">Supervised by DR. Rowaida Ali <br> TA: Mariam Abdelhamid</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('performance').scrollIntoView({behavior:'smooth'})">View Dashboard</button>
+      <button class="btn-primary" onclick="document.getElementById('analytics').scrollIntoView({behavior:'smooth'})">View Dashboard</button>
       <button class="btn-outline" onclick="document.getElementById('ai-engine').scrollIntoView({behavior:'smooth'})">Start Predictions</button>
     </div>
   </div>
@@ -224,52 +221,11 @@
   </div>
 </section>
 
-<!-- PERFORMANCE SECTION -->
-<section id="performance">
-  <div class="section-tag">01 — Key Metrics</div>
-  <h2 class="section-title reveal">Performance<br>Overview</h2>
-  <p class="section-desc reveal">Once you connect your dataset, these KPIs will populate in real time.</p>
-
-  <div class="kpi-grid">
-    <div class="kpi-card reveal" style="transition-delay:0.1s">
-      <span class="kpi-icon">👤</span>
-      <span class="kpi-label">Total Customers</span>
-      <span class="kpi-value" data-count="10000">0</span>
-      <div class="kpi-desc">Row count</div>
-    </div>
-    <div class="kpi-card reveal" style="transition-delay:0.2s">
-      <span class="kpi-icon">📊</span>
-      <span class="kpi-label">Subscription Rate</span>
-      <span class="kpi-value" data-count="50" data-suffix="%">0%</span>
-      <div class="kpi-desc">Computed from yes/no split</div>
-    </div>
-    <div class="kpi-card reveal" style="transition-delay:0.3s">
-      <span class="kpi-icon">📱</span>
-      <span class="kpi-label">Avg. Call Duration</span>
-      <span class="kpi-value" data-count="100" data-suffix=" s">0 s</span>
-      <div class="kpi-desc">Average duration from the database</div>
-      
-    </div>
-    <div class="kpi-card reveal" style="transition-delay:0.4s">
-      <span class="kpi-icon">🌐</span>
-      <span class="kpi-label">Most Frequent Macro Economic Environment</span>
-      <span class="kpi-value" style="font-size:24px">Stable</span>
-      <div class="kpi-desc">Mode of macro_environment_label</div>
-    </div>
-    <div class="kpi-card reveal" style="transition-delay:0.5s">
-      <span class="kpi-icon">😍</span>
-      <span class="kpi-label">Avg. Engagement Score</span>
-      <span class="kpi-value" data-count="1.5" data-decimals="1">0.0</span>
-      <div class="kpi-desc">Average engagement_score from the database</div>
-    </div>
-  </div>
-</section>
-
 <!-- ANALYTICS SECTION -->
 <section id="analytics">
   <div class="section-tag">02 — Analytics</div>
   <h2 class="section-title reveal">Dashboard<br>Insights</h2>
-  <p class="section-desc reveal">Charts and visualizations will render here once your dataset is connected and processed.</p>
+  <p class="section-desc reveal">Executive, sales, marketing, and customer views powered by live API endpoints and Plotly visualizations.</p>
 
   <!-- Dashboard Tab Buttons -->
   <div class="dashboard-tabs reveal">
@@ -279,431 +235,84 @@
     <button class="dashboard-tab" onclick="switchDashboard('customers', this)">Customer Insights</button>
   </div>
 
-  <!-- Overview Panel -->
-  <!-- ═══════════════════════════════════════════════════
-     PANEL 1 — OVERVIEW
-     ═══════════════════════════════════════════════════ -->
-<div class="dashboard-panel active" id="dash-overview">
- 
-  <!-- KPI strip -->
-  <div class="bento-kpi-row reveal" style="transition-delay:.05s">
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-gmv"></div>
-      <div class="bkpi-inner" id="kpi-gmv" style="display:none">
-        <span class="bkpi-icon">💰</span>
-        <span class="bkpi-label">Total GMV</span>
-        <span class="bkpi-value" id="val-gmv">—</span>
-        <span class="bkpi-trend" id="trend-gmv"></span>
-      </div>
-      <div class="bkpi-accent"></div>
+  <div class="dashboard-panel active" id="dash-overview">
+    <div class="dashboard-kpi-grid reveal">
+      <article class="dashboard-kpi-card"><p>Total GMV</p><h3 id="val-gmv">--</h3></article>
+      <article class="dashboard-kpi-card"><p>YoY Revenue Growth</p><h3 id="val-yoy">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Late Delivery Rate</p><h3 id="val-late">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Avg Review Score</p><h3 id="val-score">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Avg Order Value</p><h3 id="val-aov">--</h3></article>
     </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-yoy"></div>
-      <div class="bkpi-inner" id="kpi-yoy" style="display:none">
-        <span class="bkpi-icon">📈</span>
-        <span class="bkpi-label">YoY Revenue Growth</span>
-        <span class="bkpi-value" id="val-yoy">—</span>
-        <span class="bkpi-trend" id="trend-yoy"></span>
-      </div>
-      <div class="bkpi-accent"></div>
+    <div class="dashboard-chart-grid reveal">
+      <article class="dashboard-chart-card chart-span-full">
+        <header>
+          <h4>Product Value Density</h4>
+          <span>Bubble</span>
+        </header>
+        <div id="exec-value-density-chart" class="plotly-host"></div>
+      </article>
     </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-late"></div>
-      <div class="bkpi-inner" id="kpi-late" style="display:none">
-        <span class="bkpi-icon">🚚</span>
-        <span class="bkpi-label">Late Delivery Rate</span>
-        <span class="bkpi-value" id="val-late">—</span>
-        <span class="bkpi-trend negative" id="trend-late"></span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--pink)"></div>
+  </div>
+
+  <div class="dashboard-panel" id="dash-sales">
+    <div class="dashboard-kpi-grid reveal">
+      <article class="dashboard-kpi-card"><p>Top Category</p><h3 id="sales-kpi-top-category">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Top Category Share %</p><h3 id="sales-kpi-top-category-share">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Freight Cost Ratio</p><h3 id="sales-kpi-freight-ratio">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Products in Catalog</p><h3 id="sales-kpi-products">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Pareto Concentration</p><h3 id="sales-kpi-pareto">--</h3></article>
     </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-score"></div>
-      <div class="bkpi-inner" id="kpi-score" style="display:none">
-        <span class="bkpi-icon">⭐</span>
-        <span class="bkpi-label">Avg Review Score</span>
-        <span class="bkpi-value" id="val-score">—</span>
-        <div class="bkpi-stars" id="stars-score"></div>
-      </div>
-      <div class="bkpi-accent" style="background:var(--success)"></div>
+    <div class="dashboard-chart-grid reveal">
+      <article class="dashboard-chart-card">
+        <header><h4>Revenue by Category Analysis</h4><span>Bar</span></header>
+        <div id="sales-revenue-category-chart" class="plotly-host"></div>
+      </article>
+      <article class="dashboard-chart-card">
+        <header><h4>Time Series Sales and Forecast</h4><span>Line + MA7</span></header>
+        <div id="sales-time-series-chart" class="plotly-host"></div>
+      </article>
     </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-aov"></div>
-      <div class="bkpi-inner" id="kpi-aov" style="display:none">
-        <span class="bkpi-icon">🛒</span>
-        <span class="bkpi-label">Avg Order Value</span>
-        <span class="bkpi-value" id="val-aov">—</span>
-        <span class="bkpi-trend" id="trend-aov"></span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--cyan)"></div>
+  </div>
+
+  <div class="dashboard-panel" id="dash-marketing">
+    <div class="dashboard-kpi-grid reveal">
+      <article class="dashboard-kpi-card"><p>Total MQLs</p><h3 id="marketing-kpi-total-mqls">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Funnel Conversion Rate</p><h3 id="marketing-kpi-conversion">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Avg Time to Close</p><h3 id="marketing-kpi-time-close">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Sellers Acquired</p><h3 id="marketing-kpi-sellers">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Unconverted Leads</p><h3 id="marketing-kpi-unconverted">--</h3></article>
     </div>
- 
-  </div><!-- /bento-kpi-row -->
- 
-  <!-- Charts row — Bento grid 2-col -->
-  <div class="bento-grid-2 reveal" style="transition-delay:.15s">
- 
-    <!-- Gauge card -->
-    <div class="bento-card bento-card--glass">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Delivery Health Score</div>
-          <div class="bento-card-sub">On-Time Fulfillment Gauge</div>
-        </div>
-        <div class="bento-live-dot"></div>
-      </div>
-      <div class="bento-chart-wrap" id="gaugeWrap">
-        <div class="bento-waiting" id="gauge-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <div id="gauge-chart" style="display:none; height:280px;"></div>
-      </div>
+    <div class="dashboard-chart-grid reveal">
+      <article class="dashboard-chart-card">
+        <header><h4>MQL to Seller Funnel</h4><span>Funnel</span></header>
+        <div id="marketing-funnel-chart" class="plotly-host"></div>
+      </article>
+      <article class="dashboard-chart-card">
+        <header><h4>Leads by Top 5 States</h4><span>Donut</span></header>
+        <div id="marketing-top-states-chart" class="plotly-host"></div>
+      </article>
     </div>
- 
-    <!-- Revenue area chart -->
-    <div class="bento-card bento-card--glass">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Monthly Revenue</div>
-          <div class="bento-card-sub">Gross Merchandise Value over time</div>
-        </div>
-        <span class="bento-pill">Area Chart</span>
-      </div>
-      <div class="bento-chart-wrap">
-        <div class="bento-waiting" id="revenue-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <canvas id="revenueChart" style="display:none"></canvas>
-      </div>
+  </div>
+
+  <div class="dashboard-panel" id="dash-customers">
+    <div class="dashboard-kpi-grid reveal">
+      <article class="dashboard-kpi-card"><p>Total Unique Customers</p><h3 id="customer-kpi-unique">--</h3></article>
+      <article class="dashboard-kpi-card"><p>Repeat Customer Rate</p><h3 id="customer-kpi-repeat">--</h3></article>
+      <article class="dashboard-kpi-card"><p>On-Time/Late Review Avgs</p><h3 id="customer-kpi-review-avgs">--</h3></article>
+      <article class="dashboard-kpi-card"><p>LTV</p><h3 id="customer-kpi-ltv">--</h3></article>
+      <article class="dashboard-kpi-card"><p>NPS Proxy</p><h3 id="customer-kpi-nps">--</h3></article>
     </div>
- 
-  </div><!-- /bento-grid-2 -->
-</div><!-- /dash-overview -->
- 
- 
-<!-- ═══════════════════════════════════════════════════
-     PANEL 2 — SALES DEEP DIVE
-     ═══════════════════════════════════════════════════ -->
-<div class="dashboard-panel" id="dash-sales">
- 
-  <div class="bento-kpi-row reveal" style="transition-delay:.05s">
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-topcat"></div>
-      <div class="bkpi-inner" id="kpi-topcat" style="display:none">
-        <span class="bkpi-icon">🏆</span>
-        <span class="bkpi-label">Top Category</span>
-        <span class="bkpi-value" id="val-topcat" style="font-size:20px;letter-spacing:-0.5px">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--primary-light)"></div>
+    <div class="dashboard-chart-grid reveal">
+      <article class="dashboard-chart-card chart-span-full">
+        <header><h4>Customer Distribution Map (Brazil)</h4><span>scattermapbox</span></header>
+        <div id="customer-map-chart" class="plotly-host map-host"></div>
+      </article>
+      <article class="dashboard-chart-card chart-span-full">
+        <header><h4>Review Score Distribution by Delivery Status</h4><span>Grouped Bar</span></header>
+        <div id="customer-review-status-chart" class="plotly-host"></div>
+      </article>
     </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-catshare"></div>
-      <div class="bkpi-inner" id="kpi-catshare" style="display:none">
-        <span class="bkpi-icon">🥧</span>
-        <span class="bkpi-label">Top Category Share</span>
-        <span class="bkpi-value" id="val-catshare">—</span>
-      </div>
-      <div class="bkpi-accent"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-freight"></div>
-      <div class="bkpi-inner" id="kpi-freight" style="display:none">
-        <span class="bkpi-icon">📦</span>
-        <span class="bkpi-label">Freight Cost Ratio</span>
-        <span class="bkpi-value" id="val-freight">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--pink)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-catalog"></div>
-      <div class="bkpi-inner" id="kpi-catalog" style="display:none">
-        <span class="bkpi-icon">🗂️</span>
-        <span class="bkpi-label">Products in Catalog</span>
-        <span class="bkpi-value" id="val-catalog">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--success)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-pareto"></div>
-      <div class="bkpi-inner" id="kpi-pareto" style="display:none">
-        <span class="bkpi-icon">📊</span>
-        <span class="bkpi-label">Pareto Concentration</span>
-        <span class="bkpi-value" id="val-pareto">—</span>
-        <span class="bkpi-trend" id="trend-pareto" style="color:var(--text-dimmer)">top categories</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--cyan)"></div>
-    </div>
- 
-  </div><!-- /bento-kpi-row -->
- 
-  <div class="bento-grid-2 reveal" style="transition-delay:.15s">
- 
-    <!-- Pareto Dual-axis -->
-    <div class="bento-card bento-card--glass bento-span-full">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Pareto Analysis — Revenue by Category</div>
-          <div class="bento-card-sub">Bar (GMV) + Line (Cumulative %) — 80/20 Concentration View</div>
-        </div>
-        <span class="bento-pill">Dual Axis</span>
-      </div>
-      <div class="bento-chart-wrap" style="height:320px">
-        <div class="bento-waiting" id="pareto-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <canvas id="paretoChart" style="display:none"></canvas>
-      </div>
-    </div>
- 
-    <!-- Scatter: Price vs Freight -->
-    <div class="bento-card bento-card--glass bento-span-full">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Price vs. Freight Cost</div>
-          <div class="bento-card-sub">Scatter plot by product category — spot outliers & value segments</div>
-        </div>
-        <span class="bento-pill">Scatter</span>
-      </div>
-      <div class="bento-chart-wrap" style="height:320px">
-        <div class="bento-waiting" id="scatter-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <canvas id="scatterChart" style="display:none"></canvas>
-      </div>
-    </div>
- 
-  </div><!-- /bento-grid-2 -->
-</div><!-- /dash-sales -->
- 
- 
-<!-- ═══════════════════════════════════════════════════
-     PANEL 3 — MARKETING
-     ═══════════════════════════════════════════════════ -->
-<div class="dashboard-panel" id="dash-marketing">
- 
-  <div class="bento-kpi-row reveal" style="transition-delay:.05s">
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-mqls"></div>
-      <div class="bkpi-inner" id="kpi-mqls" style="display:none">
-        <span class="bkpi-icon">🎯</span>
-        <span class="bkpi-label">Total MQLs</span>
-        <span class="bkpi-value" id="val-mqls">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--primary)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-conversion"></div>
-      <div class="bkpi-inner" id="kpi-conversion" style="display:none">
-        <span class="bkpi-icon">🔄</span>
-        <span class="bkpi-label">Funnel Conversion</span>
-        <span class="bkpi-value" id="val-conversion">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--success)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-timeclose"></div>
-      <div class="bkpi-inner" id="kpi-timeclose" style="display:none">
-        <span class="bkpi-icon">⏱️</span>
-        <span class="bkpi-label">Avg Time to Close</span>
-        <span class="bkpi-value" id="val-timeclose">—</span>
-        <span class="bkpi-trend" style="color:var(--text-dimmer)">days</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--cyan)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-sellers"></div>
-      <div class="bkpi-inner" id="kpi-sellers" style="display:none">
-        <span class="bkpi-icon">🏪</span>
-        <span class="bkpi-label">Sellers Acquired</span>
-        <span class="bkpi-value" id="val-sellers">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--primary-light)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-unconverted"></div>
-      <div class="bkpi-inner" id="kpi-unconverted" style="display:none">
-        <span class="bkpi-icon">❌</span>
-        <span class="bkpi-label">Unconverted Leads</span>
-        <span class="bkpi-value" id="val-unconverted">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--pink)"></div>
-    </div>
- 
-  </div><!-- /bento-kpi-row -->
- 
-  <div class="bento-grid-2 reveal" style="transition-delay:.15s">
- 
-    <!-- Funnel Chart -->
-    <div class="bento-card bento-card--glass">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">MQL → Seller Funnel</div>
-          <div class="bento-card-sub">Animated stage-by-stage conversion funnel</div>
-        </div>
-        <span class="bento-pill">Funnel</span>
-      </div>
-      <div class="bento-chart-wrap" id="funnelWrap">
-        <div class="bento-waiting" id="funnel-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <!-- SVG Funnel is rendered by JS into #funnel-svg-container -->
-        <div id="funnel-svg-container" style="display:none"></div>
-      </div>
-    </div>
- 
-    <!-- Treemap by Origin -->
-    <div class="bento-card bento-card--glass">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Leads by Origin</div>
-          <div class="bento-card-sub">Treemap — MQL source channel breakdown</div>
-        </div>
-        <span class="bento-pill">Treemap</span>
-      </div>
-      <div class="bento-chart-wrap" id="treemapWrap">
-        <div class="bento-waiting" id="treemap-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <div id="treemap-container" style="display:none; height:280px;"></div>
-      </div>
-    </div>
- 
-  </div><!-- /bento-grid-2 -->
-</div><!-- /dash-marketing -->
- 
- 
-<!-- ═══════════════════════════════════════════════════
-     PANEL 4 — CUSTOMER INSIGHTS
-     ═══════════════════════════════════════════════════ -->
-<div class="dashboard-panel" id="dash-customers">
- 
-  <div class="bento-kpi-row reveal" style="transition-delay:.05s">
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-ucust"></div>
-      <div class="bkpi-inner" id="kpi-ucust" style="display:none">
-        <span class="bkpi-icon">👤</span>
-        <span class="bkpi-label">Unique Customers</span>
-        <span class="bkpi-value" id="val-ucust">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--primary)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-repeat"></div>
-      <div class="bkpi-inner" id="kpi-repeat" style="display:none">
-        <span class="bkpi-icon">🔁</span>
-        <span class="bkpi-label">Repeat Rate</span>
-        <span class="bkpi-value" id="val-repeat">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--success)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-ltv"></div>
-      <div class="bkpi-inner" id="kpi-ltv" style="display:none">
-        <span class="bkpi-icon">💎</span>
-        <span class="bkpi-label">Customer LTV</span>
-        <span class="bkpi-value" id="val-ltv">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--cyan)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-nps"></div>
-      <div class="bkpi-inner" id="kpi-nps" style="display:none">
-        <span class="bkpi-icon">🌟</span>
-        <span class="bkpi-label">NPS Proxy</span>
-        <span class="bkpi-value" id="val-nps">—</span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--primary-light)"></div>
-    </div>
- 
-    <div class="bento-kpi-card">
-      <div class="bkpi-skeleton" id="sk-reviewavg"></div>
-      <div class="bkpi-inner" id="kpi-reviewavg" style="display:none">
-        <span class="bkpi-icon">📝</span>
-        <span class="bkpi-label">On-Time / Late Reviews</span>
-        <span class="bkpi-value" style="font-size:18px;letter-spacing:0">
-          <span id="val-ontime-review" style="color:var(--success)">—</span>
-          <span style="color:var(--text-dimmer);font-weight:400;font-size:14px"> / </span>
-          <span id="val-late-review" style="color:var(--pink)">—</span>
-        </span>
-      </div>
-      <div class="bkpi-accent" style="background:var(--pink)"></div>
-    </div>
- 
-  </div><!-- /bento-kpi-row -->
- 
-  <div class="bento-grid-2 reveal" style="transition-delay:.15s">
- 
-    <!-- Choropleth Map -->
-    <div class="bento-card bento-card--glass bento-span-full">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Customer Distribution — Brazil States</div>
-          <div class="bento-card-sub">Interactive choropleth map · hover for state-level breakdown</div>
-        </div>
-        <span class="bento-pill">Choropleth</span>
-      </div>
-      <div class="bento-chart-wrap" style="height:380px">
-        <div class="bento-waiting" id="map-waiting">
-          <div class="bento-waiting-icon">🗺️</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to render the choropleth map</div>
-        </div>
-        <div id="choropleth-container" style="display:none; height:380px;"></div>
-      </div>
-    </div>
- 
-    <!-- Violin / Distribution Chart -->
-    <div class="bento-card bento-card--glass bento-span-full">
-      <div class="bento-card-header">
-        <div>
-          <div class="bento-card-title">Review Score Distribution by Delivery Status</div>
-          <div class="bento-card-sub">Violin plot — sentiment spread: On-Time vs. Late deliveries</div>
-        </div>
-        <span class="bento-pill">Violin</span>
-      </div>
-      <div class="bento-chart-wrap" style="height:320px">
-        <div class="bento-waiting" id="violin-waiting">
-          <div class="bento-waiting-icon">📡</div>
-          <div class="bento-waiting-text">Waiting for Data</div>
-          <div class="bento-waiting-sub">Connect your Gold Layer DB to activate</div>
-        </div>
-        <div id="violin-container" style="display:none; height:320px;"></div>
-      </div>
-    </div>
- 
-  </div><!-- /bento-grid-2 -->
-</div><!-- /dash-customers -->
+  </div>
 
 </section><!-- /analytics -->
 
@@ -858,48 +467,6 @@
   </div>
 </section>
 
-<!-- DATASET SECTION -->
-<section id="dataset">
-  <div class="section-tag">04 — Data Preview</div>
-  <h2 class="section-title reveal">Dataset<br>Explorer</h2>
-  <p class="section-desc reveal">A preview of your dataset structure. This table will populate once your data is connected.</p>
-
-  <div class="table-container reveal">
-    <div class="table-header">
-      <div>
-        <span class="table-name">Records</span>
-        <span class="table-badge">Live DB</span>
-      </div>
-      <div class="table-actions">
-        <input type="text" class="filter-input" placeholder="Filter rows..." id="tableFilter" oninput="filterTable()">
-        <button class="toggle-btn active" onclick="toggleView(this)">Table View</button>
-        <button class="toggle-btn" onclick="toggleView(this)">Code</button>
-      </div>
-    </div>
-
-    <div style="overflow-x:auto">
-    <table id="dataTable">
-      <thead>
-        <tr>
-          <th>#</th><th>Education</th><th>Default</th><th>Housing</th><th>Loan</th><th>Contact</th><th>Month</th><th>Day of Week</th><th>Duration</th><th>Campaign</th><th>Pdays</th><th>Previous</th><th>Poutcome</th><th>Emp. Var. Rate</th><th>Cons. Price Idx</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody">
-      </tbody>
-    </table>
-    </div>
-
-    <div class="table-sql">
-      <span><span class="sql-text">Powerbi</span> : example for data selection</span>
-      <div class="table-pagination">
-        <span style="font-family:'Inter',sans-serif;font-size:12px;color:var(--text-dimmer)">Row 1 of 10</span>
-        <button class="page-btn">◀ Prev</button>
-        <button class="page-btn">Next ▶</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- PIPELINE SECTION -->
 <section id="pipeline">
   <div class="section-tag">05 — Workflow</div>
@@ -1017,11 +584,9 @@
 <script src="js/team.js"></script>
 <script src="js/scroll.js"></script>
 <script src="js/counter.js"></script>
-<script src="js/table.js"></script>
 <script src="js/prediction-engine.js"></script>
 <script src="js/theme.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="js/charts.js?v=20260511a"></script>
 <script src="js/segmentation.js"></script>
 <script>
 // ===== DASHBOARD TAB SWITCHING =====
@@ -1045,42 +610,6 @@ function switchDashboard(tab, btn) {
     next.classList.add('active');
   }, 150);
 }
-
-// Init duplicate charts for Customer Insights tab
-(function() {
-  const loanCtx2 = document.getElementById('loanChart2').getContext('2d');
-  new Chart(loanCtx2, {
-    type:'bar',
-    data:{
-      labels:['Young','Senior','Adult'],
-      datasets:[
-        { label:'Loan: Yes', data:[2100,4800,2700], backgroundColor:'#FF6B9D', borderWidth:0, borderRadius:4 },
-        { label:'Loan: No', data:[16000,14000,10200], backgroundColor:'#0066FF', borderWidth:0, borderRadius:4 },
-      ]
-    },
-    options:{
-      responsive:true,
-      plugins:{ legend:{ labels:{ color:'#B8C5D6', font:{family:"'Inter',sans-serif",size:11} } } },
-      scales:{
-        x:{ grid:{color:'rgba(0,102,255,0.05)'}, ticks:{color:'#6B7C93',font:{size:11,family:"'Inter',sans-serif"}} },
-        y:{ grid:{color:'rgba(0,102,255,0.05)'}, ticks:{color:'#6B7C93',font:{size:11,family:"'Inter',sans-serif"}} }
-      }
-    }
-  });
-
-  const commitCtx2 = document.getElementById('commitChart2').getContext('2d');
-  new Chart(commitCtx2, {
-    type:'pie',
-    data:{
-      labels:['Level 0 — No commitment','Level 1 — Single','Level 2 — Dual'],
-      datasets:[{ data:[52,28,20], backgroundColor:['#00C853','#0066FF','#FF6B9D'], borderWidth:0, hoverOffset:8 }]
-    },
-    options:{
-      responsive:true,
-      plugins:{ legend:{ position:'bottom', labels:{ color:'#B8C5D6', font:{family:"'Inter',sans-serif",size:11}, boxWidth:12 } } }
-    }
-  });
-})();
 </script>
 <script src="js/farghaly.js"></script>
 <script>

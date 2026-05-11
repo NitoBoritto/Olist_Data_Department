@@ -172,19 +172,18 @@ INNER JOIN latest_year lyr ON y.year_number = lyr.max_year
 
 UNION ALL
 
--- KPI 4: NPS Proxy
+-- KPI 4: Avg Review Score
 SELECT
-    ''Platform NPS Proxy'',
-    ROUND(y.nps_proxy, 1),
-    ''Customer satisfaction proxy'',
-    ''(Promoters - Detractors) / total'',
-    ''Sentiment'',
-    NULL,
+    ''Avg Review Score'',
+    ROUND(y.avg_review, 2),
+    ''Average customer review score'',
+    ''AVG(CAST(review_score AS FLOAT))'',
+    ''Review Change'',
+    CAST(ROUND(y.avg_review - y.prior_review, 2) AS VARCHAR(20)),
     CASE
-        WHEN y.nps_proxy >= 50 THEN ''Excellent''
-        WHEN y.nps_proxy >= 30 THEN ''Good''
-        WHEN y.nps_proxy >= 0  THEN ''Neutral''
-        ELSE ''Negative''
+        WHEN y.avg_review > y.prior_review THEN ''Review score improved''
+        WHEN y.avg_review < y.prior_review THEN ''Review score declined''
+        ELSE ''Review score stable''
     END
 FROM yearly_yoy y
 INNER JOIN latest_year lyr ON y.year_number = lyr.max_year
