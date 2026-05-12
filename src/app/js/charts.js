@@ -131,7 +131,17 @@ function renderPlot(targetId, traces, layout = {}) {
   );
 }
 
-// Re-render all plots when theme changes
+// Helper function to resize all Plotly charts
+function resizeAllCharts() {
+  const plotlyContainers = document.querySelectorAll(".plotly-host");
+  plotlyContainers.forEach((container) => {
+    if (container.data && container.layout) {
+      Plotly.Plots.resize(container);
+    }
+  });
+}
+
+// Re-render all plots when theme changes and resize them
 if (typeof MutationObserver !== "undefined") {
   const observer = new MutationObserver(() => {
     // Get all plotly chart containers and update their font colors
@@ -145,6 +155,8 @@ if (typeof MutationObserver !== "undefined") {
           });
         }
       });
+      // Resize charts after theme change to ensure proper layout
+      resizeAllCharts();
     }
   });
   
@@ -153,6 +165,35 @@ if (typeof MutationObserver !== "undefined") {
     attributeFilter: ["data-theme"],
   });
 }
+
+// Watch for dashboard panel visibility changes and resize charts
+if (typeof MutationObserver !== "undefined") {
+  const panelObserver = new MutationObserver(() => {
+    // Check if any dashboard panel just became active
+    const activePanels = document.querySelectorAll(".dashboard-panel.active");
+    if (activePanels.length > 0) {
+      // Small delay to ensure DOM is fully rendered
+      setTimeout(resizeAllCharts, 50);
+    }
+  });
+  
+  // Observe all dashboard panels for class changes
+  const dashboardPanels = document.querySelectorAll(".dashboard-panel");
+  dashboardPanels.forEach((panel) => {
+    panelObserver.observe(panel, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  });
+}
+
+// Listen for window resize events and resize charts
+let resizeTimeout;
+window.addEventListener("resize", () => {
+  // Debounce resize to avoid excessive recalculations
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(resizeAllCharts, 150);
+});
 
 function movingAverage(values, windowSize = 7) {
   if (!Array.isArray(values) || values.length === 0) {
@@ -551,6 +592,8 @@ async function initCustomers() {
 
 async function initDashboards() {
   await Promise.all([initOverview(), initSales(), initMarketing(), initCustomers()]);
+  // Ensure charts are properly sized after initial render
+  setTimeout(resizeAllCharts, 100);
 }
 
 if (document.readyState === "loading") {
