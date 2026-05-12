@@ -304,6 +304,9 @@ function renderSalesRevenueByCategory(payload) {
   }
 
   const sorted = [...rows].sort((a, b) => toNumber(b.revenue, 0) - toNumber(a.revenue, 0));
+  
+  // Get theme-aware text color
+  const textColor = getThemeAwareColor("--text-dim") || "#B8C5D6";
 
   renderPlot(
     "sales-revenue-category-chart",
@@ -322,8 +325,8 @@ function renderSalesRevenueByCategory(payload) {
     ],
     {
       margin: { t: 30, r: 20, b: 50, l: 170 },
-      xaxis: { title: "Revenue (BRL)", gridcolor: "rgba(255,255,255,0.08)" },
-      yaxis: { autorange: "reversed" },
+      xaxis: { title: "Revenue (BRL)", gridcolor: "rgba(255,255,255,0.08)", titlefont: { color: textColor }, tickfont: { color: textColor } },
+      yaxis: { autorange: "reversed", tickfont: { color: textColor } },
     },
   );
 }

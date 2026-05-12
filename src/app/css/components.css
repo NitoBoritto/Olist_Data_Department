@@ -970,6 +970,11 @@ canvas { max-width: 100%; }
   min-height: 420px;
 }
 
+#sales-revenue-category-chart {
+  height: 1000px !important;
+  min-height: 1000px !important;
+}
+
 .chart-span-full {
   grid-column: 1 / -1;
 }
