@@ -534,9 +534,9 @@ mlflow ui --port 5000
 | 02 | **Abdallah Ali Abdelgawad** | Data Engineer · Data Warehouse Engineer · ETL Developer |
 | 03 | **Mohanad Ibrahim Elsayed** | Data Analyst · BI Developer · Network Analyst |
 | 04 | **Ahmed Walid Ibrahim** | ML Engineer · NLP Engineer · AI Developer · Cloud |
-| 04 | **Mariam** | Data Analyst · EDA Specialist · Storytelling |
-| 04 | **Marwa** | Data Analyst · EDA Specialist · Storytelling |
-| 05 | **Mohamed Hassan** | Full Stack Developer · API Configuration · Website Design |
+| 05 | **Mariam Tarek Salama** | Data Analyst · EDA Specialist · Storytelling |
+| 06 | **Marwa Tarek Gaber** | Data Analyst · EDA Specialist · Storytelling |
+| 07 | **Mohamed Hassan** | Full Stack Developer · API Configuration · Website Design |
 
 ---
 
